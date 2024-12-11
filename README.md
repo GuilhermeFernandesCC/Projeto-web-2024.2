@@ -6,7 +6,7 @@ Salas com canvas compartilhados para jogar RPG.
 ## Usuários
 Cada usuário participa de varias salas, nessas salas ele pode ser Mestre(Admin) ou Jogador(Convidado) 
 
-## Salas 
+## Salas / Mesas 
 Cada sala com seus participantes, possui N canvas 
 
 ## Canvas
@@ -23,7 +23,7 @@ Representa o jogador no mapa (Herda imagem do usuário)
 ## Régua 
 Para medição dentro do grid do canvas.
 ## Upload de imagens
-Para plano de fundo dos canvas.
+Para plano de fundo dos canvas. (PNG 24bit color - 8bit transparency)
 ## Alinhamento de grid
 Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor uso.
 
