@@ -29,6 +29,6 @@ Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor us
 
 # Tecnologias planejadas 
 ## Login: Utiliza conta google exclusivamente (OAuth2) 
-## Back: Node, Typescript e Prisma?
+## Back: Node e Typescript
 ## Front: Angular
 ## Banco de Dados: PostGreSQL
