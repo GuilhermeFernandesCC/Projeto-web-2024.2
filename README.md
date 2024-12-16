@@ -32,3 +32,18 @@ Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor us
 ## Back: Node e Typescript
 ## Front: Angular
 ## Banco de Dados: PostGreSQL
+
+# Requisitos 
+### Login com conta google
+
+### Como usuário (Mestre) eu posso criar uma mesa
+
+### Como usuário (Jogador) posso convidar pessoas para a mesa
+
+### Como usuário queor vizualizar o mapa da sala 
+
+### Como usuário quero desenhar no mapa e os outros deve conseguir ver
+
+### Apagar os desenhos devem poder apagados pelo usuátio que os criou ou pelo mestre da mesa
+
+### d
