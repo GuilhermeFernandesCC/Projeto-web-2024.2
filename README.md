@@ -46,4 +46,7 @@ Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor us
 
 ### Apagar os desenhos devem poder apagados pelo usuátio que os criou ou pelo mestre da mesa
 
-### d
+### Run project 
+
+### Run Migration 
+npx prisma migrate dev --name init
