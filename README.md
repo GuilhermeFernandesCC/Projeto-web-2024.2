@@ -46,7 +46,24 @@ Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor us
 
 ### Apagar os desenhos devem poder apagados pelo usuátio que os criou ou pelo mestre da mesa
 
-### Run project 
+## Run project 
+
+### Run PostgreSQL DB
+podman machine init
+podman machine start
+podman build -t meu-postgres .
+podman run --name meu-postgres --env-file .env -p 5432:5432 -d meu-postgres
+
+### Verificar Parara e remover
+podman ps
+podman stop meu-postgres
+podman rm meu-postgres
 
 ### Run Migration 
 npx prisma migrate dev --name init
+
+### Build
+npm run build 
+
+### Run
+npm run dev
