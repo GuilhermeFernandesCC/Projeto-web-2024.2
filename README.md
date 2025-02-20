@@ -48,16 +48,14 @@ Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor us
 
 ## Run project 
 
-### Run PostgreSQL DB
-podman machine init
-podman machine start
-podman build -t meu-postgres .
-podman run --name meu-postgres --env-file .env -p 5432:5432 -d meu-postgres
+### Run Local PostgreSQL DB
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo docker build -t meu-postgres .
+sudo docker run -d -p 5433:5432 --name postgres-container meu-postgres
 
 ### Verificar Parara e remover
-podman ps
-podman stop meu-postgres
-podman rm meu-postgres
+
 
 ### Run Migration 
 npx prisma migrate dev --name init
