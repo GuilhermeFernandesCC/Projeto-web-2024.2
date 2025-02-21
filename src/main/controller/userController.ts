@@ -37,7 +37,7 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
 /**
  * @swagger
  * /user/get/{id}:
- *   post:
+ *   get:
  *     summary: Retorna um usuário pelo id
  *     description: Esta rota retorna um  usuário ao banco de dados.
  *     tags:
@@ -62,7 +62,7 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
 /**
  * @swagger
  * /user/delete/{id}:
- *   post:
+ *   delete:
  *     summary: Deleta um usuário pelo id.
  *     description: Esta rota deleta um usuário do banco de dados.
  *     tags:
@@ -86,7 +86,7 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
 /**
  * @swagger
  * /user/update/{id}:
- *   post:
+ *   put:
  *     summary: Atualiza um usuário pelo id.
  *     description: Esta rota Atualiza um usuário do banco de dados.
  *     tags:

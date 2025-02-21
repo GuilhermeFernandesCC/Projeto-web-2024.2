@@ -37,7 +37,7 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
 /**
  * @swagger
  * /token/get/id:
- *   post:
+ *   get:
  *     summary: Retorna um Token
  *     description: Esta rota retorna um Token do banco de dados.
  *     tags:
@@ -63,7 +63,7 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
 /**
  * @swagger
  * /token/delete/id:
- *   post:
+ *   delete:
  *     summary: Deleta um Token
  *     description: Esta rota deleta um Tokens do banco de dados.
  *     tags:
@@ -87,7 +87,7 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
 /**
  * @swagger
  * /token/update/id:
- *   post:
+ *   put:
  *     summary: Atualizar um Token
  *     description: Esta rota atualizar um Token do banco de dados.
  *     tags:

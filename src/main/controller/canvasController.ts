@@ -11,7 +11,7 @@ const router = Router();
  *     summary: Adiciona um novo Canvas
  *     description: Esta rota adiciona um novo Canvas ao banco de dados.
  *     tags:
- *       - Mesas
+ *       - Canvas
  *     requestBody:
  *       required: true
  *       content:
@@ -36,11 +36,11 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
 /**
  * @swagger
  * /canvas/get/id:
- *   post:
+ *   get:
  *     summary: Retorna um Canvas
  *     description: Esta rota retorna um Canvas do banco de dados.
  *     tags:
- *       - Mesas
+ *       - Canvas
  *     requestBody:
  *       required: false
  *       content:
@@ -62,11 +62,11 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
 /**
  * @swagger
  * /canvas/delete/id:
- *   post:
+ *   delete:
  *     summary: Deleta um Canvas
  *     description: Esta rota deleta um Canvas do banco de dados.
  *     tags:
- *       - Mesas
+ *       - Canvas
  *     requestBody:
  *       required: false
  *       content:
@@ -86,11 +86,11 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
 /**
  * @swagger
  * /canvas/update/id:
- *   post:
+ *   put:
  *     summary: Atualizar um Canvas
  *     description: Esta rota atualizar um Canvas do banco de dados.
  *     tags:
- *       - Mesas
+ *       - Canvas
  *     requestBody:
  *       required: true
  *       content:

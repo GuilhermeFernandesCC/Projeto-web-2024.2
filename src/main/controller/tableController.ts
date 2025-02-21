@@ -37,7 +37,7 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
 /**
  * @swagger
  * /table/get/{id}:
- *   post:
+ *   get:
  *     summary: Retorna uma mesa pelo id
  *     description: Esta rota retorna uma mesa do banco de dados.
  *     tags:
@@ -62,7 +62,7 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
 /**
  * @swagger
  * /table/delete/{id}:
- *   post:
+ *   delete:
  *     summary: Deleta uma mesa pelo id
  *     description: Esta rota deleta uma mesa do banco de dados.
  *     tags:
@@ -86,7 +86,7 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
 /**
  * @swagger
  * /table/update/{id}:
- *   post:
+ *   put:
  *     summary: Atualiza uma mesa pelo id
  *     description: Esta rota atualiza uma mesa do banco de dados.
  *     tags:
