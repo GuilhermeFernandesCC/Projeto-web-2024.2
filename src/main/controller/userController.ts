@@ -1,5 +1,5 @@
 import {Router,Request,Response, NextFunction}from 'express';
-import { userAddService,userGetService,userDeleteService, userUpdateService } from '../service/userService';
+import { userAddService,userGetService,userDeleteService, userUpdateService, userGetAllService } from '../service/userService';
 import { UserAddDto } from '../Dto/userAddDto';
 
 
@@ -106,6 +106,30 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
 router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const updateUserDto = req.body;
     const result = await userUpdateService(Number(req.params.id),updateUserDto);
+    return res.status(200).json(result);
+})
+
+/**
+ * @swagger
+ * /user/get/all:
+ *   put:
+ *     summary: Recupera todos Usuários.
+ *     description: Esta rota Retorna todos usuários do banco de dados.
+ *     tags:
+ *       - Usuários
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       500:
+ *         description: Erro no servidor
+ */
+router.put('/get/all',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const updateUserDto = req.body;
+    const result = await userGetAllService();
     return res.status(200).json(result);
 })
 

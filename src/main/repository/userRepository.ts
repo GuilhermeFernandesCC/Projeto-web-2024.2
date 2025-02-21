@@ -23,6 +23,11 @@ export const userGetRepository = async(id:number): Promise<UserDto|null> => {
 	return resultUser ? resultUser as UserDto : null;
 }
 
+export const userGetAllRepository = async(): Promise<UserDto[]|null> => {
+	const resultUsers = await prisma.user.findMany()
+	return resultUsers.map( user => user as UserDto)
+}
+
 export const userDeleteRepository = async(id:number): Promise<UserDto|null> => {
 	const resultUser = await prisma.user.delete({
 		where:{

@@ -1,7 +1,7 @@
 import { UserAddDto } from "../Dto/userAddDto";
 import { UserDto } from "../Dto/userDto";
 import { UserNotFound } from "../error/userNotFound";
-import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository} from "../repository/userRepository";
+import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository} from "../repository/userRepository";
 
 export const userAddService = async (userDto: UserAddDto): Promise<UserDto | null> => {
 	return await userAddRepository(userDto);
@@ -31,3 +31,9 @@ export const userUpdateService = async(id:number,userAddDto:UserAddDto): Promise
 	}
 	return await userUpdateRepository(id,userAddDto);
 }
+
+export const userGetAllService = async(): Promise<UserDto[]| null> => {
+	const result = await userGetAllRepository();
+
+	return result ;
+};
