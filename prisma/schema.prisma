@@ -32,7 +32,7 @@ model Table {
   id Int @id @default(autoincrement())
   name String?
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
   master User? @relation(fields: [masterId],references: [id]) // Master
   masterId Int?
   tablesPlayer UserOnTables[] // Players
