@@ -23,8 +23,8 @@ export const tokenDeleteService = async(id:number):Promise<TokenDto|null> => {
     const result = await tokenDeleteRepository(id);
     return result;
 }
-export const canvasUpdateService = async(id: number,canvasAddDto: TokenAddDto): Promise<TokenDto| null> => {
+export const tokenUpdateService = async(id: number,tokenAddDto: TokenAddDto): Promise<TokenDto| null> => {
     await tokenGetService(id)
-    const result = await tokenUpdateRepository(id,canvasAddDto)
+    const result = await tokenUpdateRepository(id,tokenAddDto)
     return result;
 };
