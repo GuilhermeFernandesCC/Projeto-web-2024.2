@@ -57,10 +57,10 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
 router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Promise<any> =>{
     const result = await userGetService(Number(req.params.id));
     return res.status(200).json(result);
-
+})
 /**
  * @swagger
- * /user/get/all:
+ * /user/getall:
  *   get:
  *     summary: Recupera todos Usuários.
  *     description: Esta rota Retorna todos usuários do banco de dados.
@@ -76,13 +76,12 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
  *       500:
  *         description: Erro no servidor
  */
-router.get('/get/all',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const updateUserDto = req.body;
     const result = await userGetAllService();
     return res.status(200).json(result);
 })
 
-})
 /**
  * @swagger
  * /user/delete/{id}:
