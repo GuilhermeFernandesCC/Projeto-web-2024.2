@@ -22,3 +22,13 @@ export const tableGetRepository = async(id:number): Promise<TableDto|null> => {
     
     return resultTable ? resultTable as TableDto : null;
 }
+
+export const tableDeleteRepository = async(id:number): Promise<TableDto|null> => {
+    const resultTable = await prisma.table.delete({
+        where:{
+            id: id
+        }
+    })
+    
+    return resultTable ? resultTable as TableDto : null;
+}
