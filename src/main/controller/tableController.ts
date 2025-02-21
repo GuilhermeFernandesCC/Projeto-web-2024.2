@@ -1,7 +1,7 @@
 import { Table } from '@prisma/client';
 import {Router,Request,Response, NextFunction}from 'express';
 import { TableAddDto } from '../Dto/tableAddDto';
-import { tableAddService, tableDeleteService, tableGetService } from '../service/tableService';
+import { tableAddService, tableDeleteService, tableGetService, tableUpdateService } from '../service/tableService';
 
 
 const router = Router();
@@ -83,6 +83,30 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
     const result = await tableDeleteService(Number(req.params.id));
     return res.status(200).json(result);
 })
-
+/**
+ * @swagger
+ * /table/update/{id}:
+ *   post:
+ *     summary: Atualiza uma mesa pelo id
+ *     description: Esta rota atualiza uma mesa do banco de dados.
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       404:
+ *         description: Mesa não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const updateUserDto = req.body;
+    const result = await tableUpdateService(Number(req.params.id),updateUserDto);
+    return res.status(200).json(result);
+})
 
 export default router;
