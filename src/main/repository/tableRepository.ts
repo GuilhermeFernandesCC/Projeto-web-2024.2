@@ -43,5 +43,5 @@ export const tableUpdateRepository = async(id:number,tableAddDto:TableAddDto): P
         }
     })
     console.log(resultTable)
-    return resultTable ? resultTable as unknown as TableDto : null;
+    return resultTable ? resultTable as TableDto : null;
 }
