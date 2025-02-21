@@ -1,4 +1,4 @@
-import { Table } from '@prisma/client';
+
 import {Router,Request,Response, NextFunction}from 'express';
 import { TableAddDto } from '../Dto/tableAddDto';
 import { tableAddService, tableDeleteService, tableGetService, tableUpdateService } from '../service/tableService';
