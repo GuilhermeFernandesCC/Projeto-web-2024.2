@@ -1,6 +1,6 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { CanvasAddDto } from '../Dto/canvasAddDto';
-import { canvasAddService } from '../service/canvasService';
+import { canvasAddService, canvasDeleteService, canvasGetService, canvasUpdateService } from '../service/canvasService';
 
 const router = Router();
 
@@ -33,4 +33,79 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
 
 });
 
+/**
+ * @swagger
+ * /canvas/get/id:
+ *   post:
+ *     summary: Retorna um Canvas
+ *     description: Esta rota retorna um Canvas do banco de dados.
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Canvas retornado com sucesso
+ *       404:
+ *         description: Canvas não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Promise<any> =>{
+    const result = await canvasGetService(Number(req.params.id));
+    return res.status(200).json(result);
+
+})
+
+/**
+ * @swagger
+ * /canvas/delete/id:
+ *   post:
+ *     summary: Deleta um Canvas
+ *     description: Esta rota deleta um Canvas do banco de dados.
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Canvas deletado com sucesso
+ *       404:
+ *         description: Canvas não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const result = await canvasDeleteService(Number(req.params.id));
+    return res.status(200).json(result);
+})
+/**
+ * @swagger
+ * /canvas/update/id:
+ *   post:
+ *     summary: Atualizar um Canvas
+ *     description: Esta rota atualizar um Canvas do banco de dados.
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Canvas atualizado com sucesso
+ *       404:
+ *         description: Canvas não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const canvasUserDto = req.body;
+    const result = await canvasUpdateService(Number(req.params.id),canvasUserDto);
+    return res.status(200).json(result);
+})
 export default router
