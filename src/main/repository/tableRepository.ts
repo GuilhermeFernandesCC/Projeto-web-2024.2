@@ -34,7 +34,7 @@ export const tableDeleteRepository = async(id:number): Promise<TableDto|null> =>
 }
 
 export const tableUpdateRepository = async(id:number,tableAddDto:TableAddDto): Promise<TableDto|null> => {
-    const resultTable = await prisma.user.update({
+    const resultTable = await prisma.table.update({
         where: {
             id:id
         },
@@ -42,5 +42,6 @@ export const tableUpdateRepository = async(id:number,tableAddDto:TableAddDto): P
             ...tableAddDto
         }
     })
+    console.log(resultTable)
     return resultTable ? resultTable as unknown as TableDto : null;
 }
