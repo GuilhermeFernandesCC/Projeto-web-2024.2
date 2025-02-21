@@ -1,14 +1,22 @@
 import express from "express"
-import { setupSwagger } from "./config/swagger"
+import "express-async-errors"
+
+import { swaggerUi, swaggerSpec } from './config/swagger';
+import userController from './controller/userController'
+import errorMiddleware from './middleware/error';
+
 
 const app = express();
 app.use(express.json());
-
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpec))
+app.use('/user',userController);
+app.use(errorMiddleware);
 //config swagger
-setupSwagger(app);
+
 
 //iniciar aplicação
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`)
+const server = app.listen(process.env.PORT, () => {
+    console.log(`🚀 Servidor rodando em http://localhost:${process.env.PORT}`)
 })
+
+export {app, server}

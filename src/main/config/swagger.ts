@@ -1,6 +1,6 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { Express } from "express";
+import { Express,Request,Response } from "express";
 
 const options: swaggerJSDoc.Options = {
     definition: {
@@ -18,13 +18,14 @@ const options: swaggerJSDoc.Options = {
         ],
     },
     apis: [
-        "./src/main/lunarmaps/routes/*.ts"
+        "./src/main/controller/*.ts"
     ],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
-
-export const setupSwagger = (app: Express) => {
-    app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    console.log(" 📄 Swagger Rodando em http://localhost:3000/api-docs")
-};
+export {swaggerUi, swaggerSpec}
+//export const setupSwagger = (app: Express) => {
+//    app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+//    
+//    console.log(" 📄 Swagger Rodando em http://localhost:3000/api-docs")
+//};
