@@ -43,7 +43,7 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
  *     tags:
  *       - Usuários
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *     responses:
@@ -68,7 +68,7 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
  *     tags:
  *       - Usuários
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *     responses:
@@ -92,7 +92,7 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
  *     tags:
  *       - Usuários
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *     responses:
