@@ -5,13 +5,14 @@ import { swaggerUi, swaggerSpec } from './config/swagger';
 import userController from './controller/userController'
 import errorMiddleware from './middleware/error';
 import tableController from "./controller/tableController";
-
+import canvasController from "./controller/canvasController";
 
 const app = express();
 app.use(express.json());
 app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpec))
 app.use('/user',userController);
 app.use('/table',tableController);
+app.use('/canvas',canvasController)
 app.use(errorMiddleware);
 //config swagger
 
