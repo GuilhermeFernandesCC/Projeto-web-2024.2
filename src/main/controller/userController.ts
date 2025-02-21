@@ -85,14 +85,14 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
 })
 /**
  * @swagger
- * /user/delete/{id}:
+ * /user/update/{id}:
  *   post:
  *     summary: Deleta um usuário pelo id.
  *     description: Esta rota deleta um usuário do banco de dados.
  *     tags:
  *       - Usuários
  *     requestBody:
- *       required: false
+ *       required: true
  *       content:
  *         application/json:
  *     responses:
