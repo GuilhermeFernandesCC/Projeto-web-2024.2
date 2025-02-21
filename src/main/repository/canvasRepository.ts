@@ -1,12 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { tableGetService } from "../service/tableService";
 import { CanvasAddDto } from "../Dto/canvasAddDto";
 import { CanvasDto } from "../Dto/canvasDto";
 
 const prisma = new PrismaClient();
 
 export const canvasAddRepository = async (canvasAddDto:CanvasAddDto): Promise<CanvasDto|null> => {
-    await tableGetService(canvasAddDto.tableId)
     const resultCanvas = await prisma.canvas.create({
         data:{
             table:{connect:{id:canvasAddDto.tableId}}
@@ -24,7 +22,7 @@ export const canvasGetRepository = async(id:number): Promise<CanvasDto|null> => 
     return resultCanvas ? resultCanvas as CanvasDto : null;
 }
 
-export const tableDeleteRepository = async(id:number): Promise<CanvasDto|null> => {
+export const canvasDeleteRepository = async(id:number): Promise<CanvasDto|null> => {
     const resultCanvas = await prisma.canvas.delete({
         where:{
             id: id
@@ -34,7 +32,7 @@ export const tableDeleteRepository = async(id:number): Promise<CanvasDto|null> =
     return resultCanvas ? resultCanvas as CanvasDto : null;
 }
 
-export const tableUpdateRepository = async(id:number,canvasAddDto:CanvasAddDto): Promise<CanvasDto|null> => {
+export const canvasUpdateRepository = async(id:number,canvasAddDto:CanvasAddDto): Promise<CanvasDto|null> => {
     const resultCanvas = await prisma.canvas.update({
         where: {
             id:id
