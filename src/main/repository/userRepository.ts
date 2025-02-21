@@ -14,15 +14,32 @@ export const userAddRepository = async (userDto:UserAddDto): Promise<UserDto | n
 };
 
 export const userGetRepository = async(id:number): Promise<UserDto|null> => {
-	const retultUser = await prisma.user.findUnique({
+	const resultUser = await prisma.user.findUnique({
 		where:{
 			id: id
 		}
 	})
 	
-	if (retultUser!=null){
-		const userDto:UserDto = retultUser;
-		return userDto
-	}
-	return null;
+	return resultUser ? resultUser as UserDto : null;
+}
+
+export const userDeleteRepository = async(id:number): Promise<UserDto|null> => {
+	const resultUser = await prisma.user.delete({
+		where:{
+			id: id
+		}
+	})
+	return resultUser ? resultUser as UserDto : null;
+}
+
+export const userUpdateRepository = async(id:number,userAddDto:UserAddDto): Promise<UserDto|null> => {
+	const resultUser = await prisma.user.update({
+		where: {
+			id:id
+		},
+		data: {
+			...userAddDto
+		}
+	})
+	return resultUser ? resultUser as UserDto : null;
 }

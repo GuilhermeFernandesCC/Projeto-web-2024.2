@@ -1,6 +1,6 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { runInContext } from "vm";
-import { userAddService,userGetService } from '../service/userService';
+import { userAddService,userGetService,userDeleteService, userUpdateService } from '../service/userService';
 import { UserAddDto } from '../Dto/userAddDto';
 
 
@@ -23,7 +23,7 @@ const router = Router();
  *       201:
  *         description: Usuário adicionado com sucesso
  *       400:
- *         description: Erro de validação
+ *         description: Bad Request
  *       500:
  *         description: Erro no servidor
  */
@@ -35,22 +35,79 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
     return res.status(201).json(result);
 
 });
-
+/**
+ * @swagger
+ * /user/get/{id}:
+ *   post:
+ *     summary: Retorna um usuário pelo id
+ *     description: Esta rota retorna um  usuário ao banco de dados.
+ *     tags:
+ *       - Usuários
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
 router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Promise<any> =>{
     const result = await userGetService(Number(req.params.id));
     return res.status(200).json(result);
 
 })
-/*
+/**
+ * @swagger
+ * /user/delete/{id}:
+ *   post:
+ *     summary: Deleta um usuário pelo id.
+ *     description: Esta rota deleta um usuário do banco de dados.
+ *     tags:
+ *       - Usuários
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
 router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const result = await userDeleteService(Number(req.params.id));
-    return res.status(201).json(result);
+    return res.status(200).json(result);
 })
-
+/**
+ * @swagger
+ * /user/delete/{id}:
+ *   post:
+ *     summary: Deleta um usuário pelo id.
+ *     description: Esta rota deleta um usuário do banco de dados.
+ *     tags:
+ *       - Usuários
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
 router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const updateUserDto = req.body;
     const result = await userUpdateService(Number(req.params.id),updateUserDto);
-    return res.status(201).json(result);
+    return res.status(200).json(result);
 })
-*/
+
 export default router;
