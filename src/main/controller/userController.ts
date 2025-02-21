@@ -1,6 +1,6 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { runInContext } from "vm";
-import { userAddService } from '../service/userService';
+import { userAddService,userGetService } from '../service/userService';
 import { UserAddDto } from '../Dto/userAddDto';
 
 
@@ -19,8 +19,6 @@ const router = Router();
  *       required: true
  *       content:
  *         application/json:
- *           schema:
- *             $ref: '#src/main/Dto/UserAddDto.ts'
  *     responses:
  *       201:
  *         description: Usuário adicionado com sucesso
@@ -37,13 +35,13 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
     return res.status(201).json(result);
 
 });
-/*
+
 router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Promise<any> =>{
     const result = await userGetService(Number(req.params.id));
-    return res.status(201).json(result);
+    return res.status(200).json(result);
 
 })
-
+/*
 router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const result = await userDeleteService(Number(req.params.id));
     return res.status(201).json(result);

@@ -16,8 +16,8 @@ model User {
   email String @unique
   name String
   createdAt DateTime @default(now())
-  tablesMaster Table[] // Tables has Master
-  tablesPlayer UserOnTables[] // Tables has Player
+  tablesMaster Table[] // Tables as Master
+  tablesPlayer UserOnTables[] // Tables as Player
   token Token?
 }
 
