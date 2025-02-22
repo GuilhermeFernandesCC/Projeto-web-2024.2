@@ -1,6 +1,6 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { CanvasAddDto } from '../Dto/canvasAddDto';
-import { canvasAddService, canvasDeleteService, canvasGetService, canvasUpdateService } from '../service/canvasService';
+import { canvasAddService, canvasDeleteService, canvasGetAllService, canvasGetService, canvasUpdateService } from '../service/canvasService';
 
 const router = Router();
 
@@ -57,6 +57,29 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
     const result = await canvasGetService(Number(req.params.id));
     return res.status(200).json(result);
 
+})
+
+/**
+ * @swagger
+ * /canvas/getall:
+ *   get:
+ *     summary: Retorna todos os Canvas
+ *     description: Esta rota retorna todos os Canvas do banco de dados.
+ *     tags:
+ *       - Canvas
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Canvas retornados com sucesso
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/getall',async ( req:Request,res: Response , next:NextFunction):Promise<any> =>{
+    const result = await canvasGetAllService;
+    return res.status(200).json(result);
 })
 
 /**

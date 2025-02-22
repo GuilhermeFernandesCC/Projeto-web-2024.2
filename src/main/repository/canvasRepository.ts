@@ -44,3 +44,8 @@ export const canvasUpdateRepository = async(id:number,canvasAddDto:CanvasAddDto)
     console.log(resultCanvas)
     return resultCanvas? resultCanvas as CanvasDto : null;
 }
+
+export const canvasGetAllRepository = async(): Promise<CanvasDto[]|null> => {
+    const resultCanvas = await prisma.canvas.findMany()
+    return resultCanvas.map( canvas => canvas as CanvasDto)
+}

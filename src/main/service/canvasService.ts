@@ -1,7 +1,7 @@
 import { CanvasAddDto } from "../Dto/canvasAddDto";
 import { CanvasDto } from "../Dto/canvasDto";
 import { CanvasNotFound } from "../error/canvasNotFound";
-import { canvasAddRepository, canvasDeleteRepository, canvasGetRepository, canvasUpdateRepository } from "../repository/canvasRepository";
+import { canvasAddRepository, canvasDeleteRepository, canvasGetAllRepository, canvasGetRepository, canvasUpdateRepository } from "../repository/canvasRepository";
 import { tableGetService } from "./tableService";
 
 export const canvasAddService = async (canvasAddDto:CanvasAddDto): Promise<CanvasDto | null> =>{
@@ -27,4 +27,9 @@ export const canvasUpdateService = async(id: number,canvasAddDto: CanvasAddDto):
     await canvasGetService(id)
     const result = await canvasUpdateRepository(id,canvasAddDto)
     return result;
+};
+export const canvasGetAllService = async(): Promise<CanvasDto[]| null> => {
+    const result = await canvasGetAllRepository();
+
+    return result ;
 };
