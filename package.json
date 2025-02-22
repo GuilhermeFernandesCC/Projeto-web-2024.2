@@ -1,0 +1,41 @@
+{
+  "name": "projeto-web-2024.2",
+  "version": "1.0.0",
+  "description": "Salas com canvas compartilhados para jogar RPG.",
+  "main": "index.js",
+  "dependencies": {
+    "@prisma/client": "^6.4.0",
+    "express-async-errors": "^3.1.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "undici-types": "^6.20.0"
+  },
+  "devDependencies": {
+    "@prisma/adapter-pg": "^6.4.0",
+    "@types/node": "^22.13.4",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
+    "dotenv": "^16.4.7",
+    "pg": "^8.13.3",
+    "prisma": "^6.4.0",
+    "ts-node-dev": "^2.0.0",
+    "tsc": "^2.0.4",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev src/main/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuilhermeFernandesCC/Projeto-web-2024.2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuilhermeFernandesCC/Projeto-web-2024.2/issues"
+  },
+  "homepage": "https://github.com/GuilhermeFernandesCC/Projeto-web-2024.2#readme"
+}
