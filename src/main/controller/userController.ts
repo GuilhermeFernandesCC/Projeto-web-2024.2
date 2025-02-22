@@ -77,7 +77,6 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
  *         description: Erro no servidor
  */
 router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
-    const updateUserDto = req.body;
     const result = await userGetAllService();
     return res.status(200).json(result);
 })

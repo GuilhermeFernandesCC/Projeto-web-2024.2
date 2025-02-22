@@ -1,7 +1,7 @@
 import { TokenAddDto } from "../Dto/tokenAddDto";
 import { TokenDto } from "../Dto/tokenDto";
 import { TokenNotFound } from "../error/tokenNotFound";
-import { tokenAddRepository, tokenDeleteRepository, tokenGetRepository, tokenUpdateRepository } from "../repository/tokenRepository";
+import { tokenAddRepository, tokenDeleteRepository, tokenGetAllRepository, tokenGetRepository, tokenUpdateRepository } from "../repository/tokenRepository";
 import { userGetService } from "./userService";
 
 export const tokenAddService = async (tokenAddDto:TokenAddDto): Promise<TokenDto | null> =>{
@@ -16,6 +16,10 @@ export const tokenGetService = async(id: number): Promise<TokenDto| null> => {
         throw TokenNotFound()
     }
 
+    return result ;
+};
+export const tokenGetAllService = async(): Promise<TokenDto[]|null> => {
+    const result = await tokenGetAllRepository();
     return result ;
 };
 export const tokenDeleteService = async(id:number):Promise<TokenDto|null> => {

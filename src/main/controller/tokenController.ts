@@ -1,6 +1,6 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { TokenAddDto } from '../Dto/tokenAddDto';
-import { tokenAddService, tokenGetService, tokenUpdateService } from '../service/tokenService';
+import { tokenAddService, tokenGetAllService, tokenGetService, tokenUpdateService } from '../service/tokenService';
 import { canvasDeleteService } from '../service/canvasService';
 
 const router = Router();
@@ -60,6 +60,30 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
 
 })
 
+/**
+ * @swagger
+ * /token/get/id:
+ *   get:
+ *     summary: Retorna um Token
+ *     description: Esta rota retorna um Token do banco de dados.
+ *     tags:
+ *       - Tokens
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Tokens retornado com sucesso
+ *       404:
+ *         description: Tokens não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const result = await tokenGetAllService();
+    return res.status(200).json(result);
+})
 /**
  * @swagger
  * /token/delete/id:

@@ -44,3 +44,8 @@ export const tokenUpdateRepository = async(id:number,tokenAddDto:TokenAddDto): P
     console.log(resultToken)
     return resultToken? resultToken as TokenDto : null;
 }
+
+export const tokenGetAllRepository = async(): Promise<TokenDto[]|null> => {
+    const resultTokens = await prisma.token.findMany()
+    return resultTokens.map( token => token as TokenDto)
+}
