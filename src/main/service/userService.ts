@@ -1,9 +1,17 @@
 import { UserAddDto } from "../Dto/userAddDto";
 import { UserDto } from "../Dto/userDto";
+import { emailAlreadyUsed } from "../error/emailAlreadyUsed";
 import { UserNotFound } from "../error/userNotFound";
-import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository} from "../repository/userRepository";
+import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository, userEmailinUseRepository} from "../repository/userRepository";
+
+const emailinUse = async (email:string): Promise<any> => {
+	if (await userEmailinUseRepository(email)){
+		throw emailAlreadyUsed();
+	}
+}
 
 export const userAddService = async (userDto: UserAddDto): Promise<UserDto | null> => {
+	await emailinUse(userDto.email);
 	return await userAddRepository(userDto);
 };
 

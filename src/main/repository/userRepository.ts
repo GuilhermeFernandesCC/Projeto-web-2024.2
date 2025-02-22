@@ -4,6 +4,7 @@ import { UserDto } from '../Dto/userDto';
 
 const prisma = new PrismaClient();
 
+
 export const userAddRepository = async (userDto:UserAddDto): Promise<UserDto | null> => {
 	const resultUser = await prisma.user.create({
 		data: {
@@ -47,4 +48,12 @@ export const userUpdateRepository = async(id:number,userAddDto:UserAddDto): Prom
 		}
 	})
 	return resultUser ? resultUser as UserDto : null;
+}
+
+export const userEmailinUseRepository = async(email:string):Promise<boolean> => {
+	return await prisma.user.count({
+		where:{
+			email:email
+		}
+	}) > 0
 }

@@ -22,7 +22,7 @@ const router = Router();
  *       201:
  *         description: Usuário adicionado com sucesso
  *       400:
- *         description: Bad Request
+ *         description: Bad Request - Email já cadastrado
  *       500:
  *         description: Erro no servidor
  */
