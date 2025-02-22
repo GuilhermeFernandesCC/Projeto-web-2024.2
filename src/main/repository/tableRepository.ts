@@ -45,3 +45,8 @@ export const tableUpdateRepository = async(id:number,tableAddDto:TableAddDto): P
     console.log(resultTable)
     return resultTable ? resultTable as TableDto : null;
 }
+
+export const tableGetAllRepository = async(): Promise<TableDto[]|null> => {
+    const resultTables = await prisma.table.findMany()
+    return resultTables.map( table => table as TableDto)
+}

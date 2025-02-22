@@ -1,7 +1,7 @@
 
 import {Router,Request,Response, NextFunction}from 'express';
 import { TableAddDto } from '../Dto/tableAddDto';
-import { tableAddService, tableDeleteService, tableGetService, tableUpdateService } from '../service/tableService';
+import { tableAddService, tableDeleteService, tableGetAllService, tableGetService, tableUpdateService } from '../service/tableService';
 
 
 const router = Router();
@@ -56,6 +56,30 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
  */
 router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Promise<any> =>{
     const result = await tableGetService(Number(req.params.id));
+    return res.status(200).json(result);
+
+})
+
+/**
+ * @swagger
+ * /table/getall:
+ *   get:
+ *     summary: Retorna todas as mesas
+ *     description: Esta rota retorna todas as mesa do banco de dados.
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucessoo
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/getall',async ( req:Request,res: Response , next:NextFunction):Promise<any> =>{
+    const result = await tableGetAllService();
     return res.status(200).json(result);
 
 })
