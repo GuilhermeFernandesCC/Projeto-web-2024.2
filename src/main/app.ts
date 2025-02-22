@@ -9,18 +9,20 @@ import canvasController from "./controller/canvasController";
 import tokenController from "./controller/tokenController"
 const app = express();
 app.use(express.json());
+//config swagger
 app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpec))
 app.use('/user',userController);
 app.use('/table',tableController);
 app.use('/canvas',canvasController);
 app.use('/token',tokenController);
 app.use(errorMiddleware);
-//config swagger
+
 
 
 //iniciar aplicação
 const server = app.listen(process.env.PORT, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${process.env.PORT}`)
+    console.log(`Documentação Swagger em http://localhost:${process.env.PORT}/api-docs`)
 })
 
 export {app, server}
