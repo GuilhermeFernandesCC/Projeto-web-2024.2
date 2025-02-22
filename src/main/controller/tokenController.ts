@@ -48,9 +48,9 @@ router.post('/add', async (req: Request, res: Response , next:NextFunction):Prom
  *         application/json:
  *     responses:
  *       200:
- *         description: Tokens retornado com sucesso
+ *         description: Token retornado com sucesso
  *       404:
- *         description: Tokens não encontrado
+ *         description: Token não encontrado
  *       500:
  *         description: Erro no servidor
  */
@@ -62,10 +62,10 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
 
 /**
  * @swagger
- * /token/get/id:
+ * /token/getall:
  *   get:
- *     summary: Retorna um Token
- *     description: Esta rota retorna um Token do banco de dados.
+ *     summary: Retorna todos os tokens
+ *     description: Esta rota retorna todos os Tokens do banco de dados.
  *     tags:
  *       - Tokens
  *     requestBody:
@@ -75,8 +75,6 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
  *     responses:
  *       200:
  *         description: Tokens retornado com sucesso
- *       404:
- *         description: Tokens não encontrado
  *       500:
  *         description: Erro no servidor
  */
