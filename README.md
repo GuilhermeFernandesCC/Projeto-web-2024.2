@@ -2,6 +2,18 @@
 Salas com canvas compartilhados para jogar RPG.
 # Documentação Swagger
 http://localhost:3000/api-docs
+
+## Run project
+
+### Instalar Dependências
+npm install
+
+### Run Migration 
+npx prisma migrate dev  init OBS: Supabase meio instável no plano básico talvez uma ou duas tentativas seja necessária
+
+### Run
+npm run dev
+
 # Objetos 
 
 ## Usuários
@@ -45,16 +57,3 @@ Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor us
 
 ### Apagar os desenhos devem poder apagados pelo usuátio que os criou ou pelo mestre da mesa
 
-## Run project
-
-### Instalar Dependências
-npm install
-
-### Run Migration 
-npx prisma migrate dev  init
-
-### Build
-npm run build 
-
-### Run
-npm run dev
