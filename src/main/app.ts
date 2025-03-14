@@ -8,7 +8,7 @@ import errorMiddleware from './middleware/error';
 import tableController from "./controller/tableController";
 import canvasController from "./controller/canvasController";
 import tokenController from "./controller/tokenController"
-import authRoutes from './routes/authRoutes'
+import authController from './controller/authController'
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json());
 //config swagger
 app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpec))
-app.use('/auth',authRoutes)
+app.use('/auth',authController)
 app.use('/user',userController);
 app.use('/table',tableController);
 app.use('/canvas',canvasController);

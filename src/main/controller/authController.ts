@@ -1,8 +1,10 @@
-import {Request, Response} from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {comparePassword, generateToken} from '../utils/auth';
 import { userGetByEmailService } from '../service/userService';
 
-export const login = async (req: Request, res:Response) => {
+const router = Router()
+
+router.post('/login', async (req: Request, res:Response, next:NextFunction):Promise<any> => {
     const {email, password} = req.body;
     
     try {
@@ -27,4 +29,6 @@ export const login = async (req: Request, res:Response) => {
     } catch (err) {
         res.status(500).json({message:'Error logging in',error:err})
     }
-}
+})
+
+export default router;
