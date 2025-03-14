@@ -57,3 +57,13 @@ export const userEmailinUseRepository = async(email:string):Promise<boolean> => 
 		}
 	}) > 0
 }
+
+export const userGetByEmailRepository = async(email:string):Promise<UserAddDto|null> => {
+	const resultUser = await prisma.user.findUnique({
+		where: {
+			email:email
+		}
+	})
+	return resultUser ? resultUser as UserAddDto : null;
+
+}

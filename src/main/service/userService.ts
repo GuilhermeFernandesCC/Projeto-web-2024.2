@@ -2,7 +2,7 @@ import { UserAddDto } from "../Dto/userAddDto";
 import { UserDto } from "../Dto/userDto";
 import { emailAlreadyUsed } from "../error/emailAlreadyUsed";
 import { UserNotFound } from "../error/userNotFound";
-import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository, userEmailinUseRepository} from "../repository/userRepository";
+import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository, userEmailinUseRepository, userGetByEmailRepository} from "../repository/userRepository";
 
 const emailinUse = async (email:string): Promise<any> => {
 	if (await userEmailinUseRepository(email)){
@@ -45,3 +45,8 @@ export const userGetAllService = async(): Promise<UserDto[]| null> => {
 
 	return result ;
 };
+
+export const userGetByEmailService = async(email:string): Promise<UserAddDto| null> => {
+	const result = await userGetByEmailRepository(email);
+	return result;
+}
