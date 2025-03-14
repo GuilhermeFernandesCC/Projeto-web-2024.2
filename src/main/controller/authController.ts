@@ -3,7 +3,26 @@ import {comparePassword, generateToken} from '../utils/auth';
 import { userGetByEmailService } from '../service/userService';
 
 const router = Router()
-
+/**
+ * @swagger
+ * /auth
+ *   post:
+ *     summary: Login Auth
+ *     description: Esta rota realiza o login.
+ *     tags:
+ *       - Canvas
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso no Login
+ *       400:
+ *         description: Invalid email or password
+ *       500:
+ *         description: Erro no servidor durante login
+ */
 router.post('/login', async (req: Request, res:Response, next:NextFunction):Promise<any> => {
     const {email, password} = req.body;
     
@@ -11,13 +30,13 @@ router.post('/login', async (req: Request, res:Response, next:NextFunction):Prom
         // Verifica se o usuário existe;
         const user = await userGetByEmailService(email);
         if (!user) {
-            return res.status(400).json({message: 'Invalid username or password'});
+            return res.status(400).json({message: 'Invalid email or password'});
         }
 
         // Compara a senha fornecida com a senha armazenada
         const isPasswordValid = await comparePassword(password, user.senha);
         if (!isPasswordValid){
-            return res.status(400).json({message: 'Invalid username or password'});
+            return res.status(400).json({message: 'Invalid email or password'});
             
         }
 
