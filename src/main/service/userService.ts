@@ -1,5 +1,6 @@
 import { UserAddDto } from "../Dto/userAddDto";
 import { UserDto } from "../Dto/userDto";
+import { UserGetDto } from "../Dto/userGetDto";
 import { emailAlreadyUsed } from "../error/emailAlreadyUsed";
 import { UserNotFound } from "../error/userNotFound";
 import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository, userEmailinUseRepository, userGetByEmailRepository} from "../repository/userRepository";
@@ -10,12 +11,12 @@ const emailinUse = async (email:string): Promise<any> => {
 	}
 }
 
-export const userAddService = async (userDto: UserAddDto): Promise<UserDto | null> => {
+export const userAddService = async (userDto: UserAddDto): Promise<UserGetDto | null> => {
 	await emailinUse(userDto.email);
 	return await userAddRepository(userDto);
 };
 
-export const userGetService = async(id: number): Promise<UserDto| null> => {
+export const userGetService = async(id: number): Promise<UserGetDto| null> => {
 	const result = await userGetRepository(id);
 	if (result == null){
 		throw UserNotFound()
@@ -24,7 +25,7 @@ export const userGetService = async(id: number): Promise<UserDto| null> => {
 	return result ;
 };
 
-export const userDeleteService = async(id: number): Promise<UserDto| null> => {
+export const userDeleteService = async(id: number): Promise<UserGetDto| null> => {
 	const result = await userGetRepository(id);
 	if (result == null){
 		throw UserNotFound()
@@ -32,7 +33,7 @@ export const userDeleteService = async(id: number): Promise<UserDto| null> => {
 	return await userDeleteRepository(id);
 }
 
-export const userUpdateService = async(id:number,userAddDto:UserAddDto): Promise<UserDto| null> => {
+export const userUpdateService = async(id:number,userAddDto:UserAddDto): Promise<UserGetDto| null> => {
 	const result = await userGetRepository(id);
 	if (result == null){
 		throw UserNotFound()
@@ -40,13 +41,13 @@ export const userUpdateService = async(id:number,userAddDto:UserAddDto): Promise
 	return await userUpdateRepository(id,userAddDto);
 }
 
-export const userGetAllService = async(): Promise<UserDto[]| null> => {
+export const userGetAllService = async(): Promise<UserGetDto[]| null> => {
 	const result = await userGetAllRepository();
 
 	return result ;
 };
 
-export const userGetByEmailService = async(email:string): Promise<UserAddDto| null> => {
+export const userGetByEmailService = async(email:string): Promise<UserDto| null> => {
 	const result = await userGetByEmailRepository(email);
 	return result;
 }

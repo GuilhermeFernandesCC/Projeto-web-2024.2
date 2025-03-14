@@ -5,13 +5,17 @@
   "main": "index.js",
   "dependencies": {
     "@prisma/client": "^6.4.0",
+    "bcryptjs": "^3.0.2",
     "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "undici-types": "^6.20.0"
   },
   "devDependencies": {
     "@prisma/adapter-pg": "^6.4.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.4",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.7",
