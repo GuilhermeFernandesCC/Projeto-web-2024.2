@@ -9,9 +9,10 @@ import tableController from "./controller/tableController";
 import canvasController from "./controller/canvasController";
 import tokenController from "./controller/tokenController"
 import authController from './controller/authController'
+import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
-
+const prisma = new PrismaClient()
 const app = express();
 app.use(express.json());
 //config swagger
@@ -23,12 +24,13 @@ app.use('/canvas',canvasController);
 app.use('/token',tokenController);
 app.use(errorMiddleware);
 
-
+const PORT = process.env.PORT || 3000;
 
 //iniciar aplicação
-const server = app.listen(process.env.PORT, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${process.env.PORT}`)
-    console.log(`Documentação Swagger em http://localhost:${process.env.PORT}/api-docs`)
-})
-
-export {app, server}
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Servidor rodando em http://localhost:${process.env.PORT}`)
+        console.log(`Documentação Swagger em http://localhost:${process.env.PORT}/api-docs`)
+    })
+}
+export {app,prisma}
