@@ -10,8 +10,10 @@ interface AuthRequest extends Request {
 export const checkOwner = (model: "user"):any => {
     return async (req: AuthRequest, res: Response, next:NextFunction)=>{
         const {id} = req.params;
+        console.log(id)
         const userId = req.user?.id;
-
+        console.log(req.user)
+        console.log('##'+userId)
         if (!userId){
             return res.status(401).json({message:"Usuário não autenticado"})
         }
@@ -33,7 +35,6 @@ export const checkTableOwner = (model: "table"):any => {
     return async (req: AuthRequest, res: Response, next:NextFunction)=>{
         const {id} = req.params;
         const userId = req.user?.id;
-
         if (!userId){
             return res.status(401).json({message:"Usuário não autenticado"})
         }

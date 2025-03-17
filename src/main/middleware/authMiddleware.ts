@@ -10,7 +10,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction):an
 
     try {
         const decoded = verifyToken(token);
-        (res as any).user = decoded; //Adiciona o usuário decodificado ao objeto 'req'
+        (req as any).user = decoded; //Adiciona o usuário decodificado ao objeto 'req'
         next();
     }catch (err){
         res.status(400).json({message:'Invalid token.'});
