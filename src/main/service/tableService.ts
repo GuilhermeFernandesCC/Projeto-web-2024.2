@@ -1,4 +1,5 @@
 import { TableAddDto } from "../Dto/tableAddDto";
+import { TableUpdateDto } from "../Dto/tableUpdateDto";
 import { TableDto } from "../Dto/tableDto";
 import { TableNotFound } from "../error/tableNotFound";
 import { tableAddRepository, tableDeleteRepository, tableGetAllRepository, tableGetRepository, tableUpdateRepository } from "../repository/tableRepository";
@@ -24,9 +25,9 @@ export const tableDeleteService = async(id: number): Promise<TableDto| null> => 
     const result = await tableDeleteRepository(id)
     return result;
 };
-export const tableUpdateService = async(id: number,tableAddDto: TableAddDto): Promise<TableDto| null> => {
+export const tableUpdateService = async(id: number,tableUpdateDto: TableUpdateDto): Promise<TableDto| null> => {
     await tableGetService(id)
-    const result = await tableUpdateRepository(id,tableAddDto)
+    const result = await tableUpdateRepository(id,tableUpdateDto)
     return result;
 };
 export const tableGetAllService = async(): Promise<TableDto[]| null> => {

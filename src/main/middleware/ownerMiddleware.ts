@@ -7,21 +7,18 @@ interface AuthRequest extends Request {
     user?: {id:number,email:string};
 }
 
-export const checkOwner = (model: "user"):any => {
+export const checkOwner = ():any => {
     return async (req: AuthRequest, res: Response, next:NextFunction)=>{
         const {id} = req.params;
-        console.log(id)
         const userId = req.user?.id;
-        console.log(req.user)
-        console.log('##'+userId)
         if (!userId){
             return res.status(401).json({message:"Usuário não autenticado"})
         }
 
-        const resource = await prisma[model].findUnique({where: {id:Number(id)}});
+        const resource = await prisma['user'].findUnique({where: {id:Number(id)}});
 
         if (!resource) {
-            return res.status(404).json({message:`${model} não encontrado.`})
+            return res.status(404).json({message:`Usuário não encontrado.`})
         }
 
         if (resource.id !== userId){
@@ -31,18 +28,18 @@ export const checkOwner = (model: "user"):any => {
     }
 }
 
-export const checkTableOwner = (model: "table"):any => {
+export const checkTableOwner = ():any => {
     return async (req: AuthRequest, res: Response, next:NextFunction)=>{
-        const {id} = req.params;
+        const tableId = req.params.id
         const userId = req.user?.id;
         if (!userId){
             return res.status(401).json({message:"Usuário não autenticado"})
         }
 
-        const resource = await prisma[model].findUnique({where: {id:Number(id)}});
-
+        const resource = await prisma['table'].findUnique({where: { id:Number(tableId)}});
+        
         if (!resource) {
-            return res.status(404).json({message:`${model} não encontrado.`})
+            return res.status(404).json({message:`Table não encontrado.`})
         }
 
         if (resource.masterId !== userId){

@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { TableAddDto } from "../Dto/tableAddDto";
 import { TableDto } from "../Dto/tableDto";
+import { TableUpdateDto } from "../Dto/tableUpdateDto";
 
 const prisma = new PrismaClient();
 
@@ -33,13 +34,13 @@ export const tableDeleteRepository = async(id:number): Promise<TableDto|null> =>
     return resultTable ? resultTable as TableDto : null;
 }
 
-export const tableUpdateRepository = async(id:number,tableAddDto:TableAddDto): Promise<TableDto|null> => {
+export const tableUpdateRepository = async(id:number,tableUpdateDto:TableUpdateDto): Promise<TableDto|null> => {
     const resultTable = await prisma.table.update({
         where: {
             id:id
         },
         data: {
-            ...tableAddDto
+            ...tableUpdateDto
         }
     })
     console.log(resultTable)

@@ -102,7 +102,7 @@ router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise
  *       500:
  *         description: Erro no servidor
  */
-router.delete('/delete/:id',authenticate,checkOwner('user'),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.delete('/delete/:id',authenticate,checkOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const result = await userDeleteService(Number(req.params.id));
     return res.status(200).json(result);
 })

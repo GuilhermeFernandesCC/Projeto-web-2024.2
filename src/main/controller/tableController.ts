@@ -2,8 +2,13 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { TableAddDto } from '../Dto/tableAddDto';
 import { tableAddService, tableDeleteService, tableGetAllService, tableGetService, tableUpdateService } from '../service/tableService';
+import { authenticate } from '../middleware/authMiddleware';
+import { checkTableOwner } from '../middleware/ownerMiddleware';
+import { TableUpdateDto } from '../Dto/tableUpdateDto';
 
-
+interface AuthRequest extends Request {
+    user?: {id:number,email:string};
+}
 const router = Router();
 /**
  * @swagger
@@ -25,9 +30,12 @@ const router = Router();
  *       500:
  *         description: Erro no servidor
  */
-router.post('/add', async (req: Request, res: Response , next:NextFunction):Promise<any> => {
+router.post('/add' ,authenticate,async (req: AuthRequest, res: Response , next:NextFunction):Promise<any> => {
     const tableDto:TableAddDto = req.body;
-
+    if(req.user?.id){
+        tableDto.masterId = Number(req.user?.id)
+    }
+    
     const result = await tableAddService(tableDto);
 
     return res.status(201).json(result);
@@ -103,7 +111,7 @@ router.get('/getall',async ( req:Request,res: Response , next:NextFunction):Prom
  *       500:
  *         description: Erro no servidor
  */
-router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.delete('/delete/:id',authenticate,checkTableOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const result = await tableDeleteService(Number(req.params.id));
     return res.status(200).json(result);
 })
@@ -127,9 +135,9 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
  *       500:
  *         description: Erro no servidor
  */
-router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
-    const updateUserDto = req.body;
-    const result = await tableUpdateService(Number(req.params.id),updateUserDto);
+router.put('/update/:id',authenticate,checkTableOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const updateTableDto = req.body;
+    const result = await tableUpdateService(Number(req.params.id),updateTableDto);
     return res.status(200).json(result);
 })
 
