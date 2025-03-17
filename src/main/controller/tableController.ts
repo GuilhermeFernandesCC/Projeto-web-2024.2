@@ -5,6 +5,7 @@ import { tableAddService, tableDeleteService, tableGetAllService, tableGetServic
 import { authenticate } from '../middleware/authMiddleware';
 import { checkTableOwner } from '../middleware/ownerMiddleware';
 import { TableUpdateDto } from '../Dto/tableUpdateDto';
+import { UserNotFound } from '../error/userNotFound';
 
 interface AuthRequest extends Request {
     user?: {id:number,email:string};
@@ -31,10 +32,13 @@ const router = Router();
  *         description: Erro no servidor
  */
 router.post('/add' ,authenticate,async (req: AuthRequest, res: Response , next:NextFunction):Promise<any> => {
-    const tableDto:TableAddDto = req.body;
-    if(req.user?.id){
-        tableDto.masterId = Number(req.user?.id)
+    
+    if(!req.user?.id){
+        throw UserNotFound();
     }
+    const tableDto:TableAddDto = req.body;
+    
+    tableDto.masterId = Number(req.user?.id)
     
     const result = await tableAddService(tableDto);
 
