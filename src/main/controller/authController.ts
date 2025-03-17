@@ -5,7 +5,7 @@ import { userGetByEmailService } from '../service/userService';
 const router = Router()
 /**
  * @swagger
- * /auth:
+ * /auth/login:
  *   post:
  *     summary: Login Auth
  *     description: Esta rota realiza o login.
@@ -29,14 +29,16 @@ router.post('/login', async (req: Request, res:Response, next:NextFunction):Prom
     try {
         // Verifica se o usuário existe;
         const user = await userGetByEmailService(email);
+        console.log(user?.senha)
+        console.log(password)
         if (!user) {
-            return res.status(400).json({message: 'Invalid email or password'});
+            return res.status(400).json({message: 'Invalid email'});
         }
 
         // Compara a senha fornecida com a senha armazenada
         const isPasswordValid = await comparePassword(password, user.senha);
         if (!isPasswordValid){
-            return res.status(400).json({message: 'Invalid email or password'});
+            return res.status(400).json({message: 'Invalid password'});
             
         }
 

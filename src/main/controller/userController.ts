@@ -1,7 +1,8 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { userAddService,userGetService,userDeleteService, userUpdateService, userGetAllService } from '../service/userService';
 import { UserAddDto } from '../Dto/userAddDto';
-
+import { authenticate } from '../middleware/authMiddleware'
+import { checkOwner } from '../middleware/ownerMiddleware';
 
 const router = Router();
 
@@ -101,7 +102,7 @@ router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise
  *       500:
  *         description: Erro no servidor
  */
-router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.delete('/delete/:id',authenticate,checkOwner('user'),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const result = await userDeleteService(Number(req.params.id));
     return res.status(200).json(result);
 })

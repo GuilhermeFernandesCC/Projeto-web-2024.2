@@ -1,7 +1,7 @@
 import { Request,Response,NextFunction } from "express";
 import { verifyToken } from "../utils/auth";
 
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = (req: Request, res: Response, next: NextFunction):any =>  {
     const token = req.header('Authorization')?.replace('Beares','');
 
     if(!token) {

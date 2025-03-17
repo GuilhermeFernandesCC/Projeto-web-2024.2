@@ -4,6 +4,7 @@ import { UserGetDto } from "../Dto/userGetDto";
 import { emailAlreadyUsed } from "../error/emailAlreadyUsed";
 import { UserNotFound } from "../error/userNotFound";
 import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository, userEmailinUseRepository, userGetByEmailRepository} from "../repository/userRepository";
+import { hashPassword } from "../utils/auth";
 
 const emailinUse = async (email:string): Promise<any> => {
 	if (await userEmailinUseRepository(email)){
@@ -13,6 +14,7 @@ const emailinUse = async (email:string): Promise<any> => {
 
 export const userAddService = async (userDto: UserAddDto): Promise<UserGetDto | null> => {
 	await emailinUse(userDto.email);
+	userDto.senha = await hashPassword(userDto.senha)
 	return await userAddRepository(userDto);
 };
 
