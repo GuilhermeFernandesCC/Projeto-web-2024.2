@@ -10,17 +10,17 @@ var url_base = ''
 
 let server: Server;
 before(async function () {
+  this.timeout(20000);
   //BD de Testes
   process.env.PORT = '4001'
   process.env.DATABASE_URL = "postgresql://postgres:ProjetoWeb777@db.bzbphfxgkdubddvmkgyu.supabase.co:5432/postgres"
-  
+  //Inicia aplicação em teste
   server = app.listen(process.env.PORT, () => {
     console.log(`🚀 Aplicação de testes rodando na porta ${process.env.PORT}`);
   });
-
+  //URL
   url_base = 'http://localhost:'+process.env.PORT
   console.log(url_base)
-  this.timeout(20000);
   //console.log("⏳ Resetando o banco de testes...");
   //execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
   //console.log("✅ Banco de testes resetado!");
