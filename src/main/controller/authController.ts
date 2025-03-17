@@ -5,12 +5,12 @@ import { userGetByEmailService } from '../service/userService';
 const router = Router()
 /**
  * @swagger
- * /auth
+ * /auth:
  *   post:
  *     summary: Login Auth
  *     description: Esta rota realiza o login.
  *     tags:
- *       - Canvas
+ *       - Login
  *     requestBody:
  *       required: true
  *       content:
