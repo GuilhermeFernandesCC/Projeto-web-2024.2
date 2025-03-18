@@ -49,3 +49,8 @@ export const tokenGetAllRepository = async(): Promise<TokenDto[]|null> => {
     const resultTokens = await prisma.token.findMany()
     return resultTokens.map( token => token as TokenDto)
 }
+
+export const userWithTokenRepository = async(userid:number): Promise<number|null> => {
+    const token = await prisma['token'].findUnique({where:{userId:userid}})
+    return token? token.userId:null;
+}   
