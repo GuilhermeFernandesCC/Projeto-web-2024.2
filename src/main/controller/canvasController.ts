@@ -1,6 +1,8 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { CanvasAddDto } from '../Dto/canvasAddDto';
 import { canvasAddService, canvasDeleteService, canvasGetAllService, canvasGetService, canvasUpdateService } from '../service/canvasService';
+import { authenticate } from '../middleware/authMiddleware';
+import { checkCanvasOwner, checkTableOwner } from '../middleware/ownerMiddleware';
 
 const router = Router();
 
@@ -8,7 +10,7 @@ const router = Router();
  * @swagger
  * /canvas/add:
  *   post:
- *     summary: Adiciona um novo Canvas
+ *     summary: Adiciona um novo Canvas 
  *     description: Esta rota adiciona um novo Canvas ao banco de dados.
  *     tags:
  *       - Canvas
@@ -24,7 +26,7 @@ const router = Router();
  *       500:
  *         description: Erro no servidor
  */
-router.post('/add', async (req: Request, res: Response , next:NextFunction):Promise<any> => {
+router.post('/add',authenticate,checkTableOwner() ,async (req: Request, res: Response , next:NextFunction):Promise<any> => {
     const canvasDto:CanvasAddDto = req.body;
 
     const result = await canvasAddService(canvasDto);
@@ -102,7 +104,7 @@ router.get('/getall',async ( req:Request,res: Response , next:NextFunction):Prom
  *       500:
  *         description: Erro no servidor
  */
-router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.delete('/delete/:id',authenticate,checkCanvasOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const result = await canvasDeleteService(Number(req.params.id));
     return res.status(200).json(result);
 })
@@ -126,7 +128,7 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
  *       500:
  *         description: Erro no servidor
  */
-router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.put('/update/:id',authenticate,checkCanvasOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const canvasUserDto = req.body;
     const result = await canvasUpdateService(Number(req.params.id),canvasUserDto);
     return res.status(200).json(result);

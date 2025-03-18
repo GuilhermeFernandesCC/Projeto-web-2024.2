@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export const canvasAddRepository = async (canvasAddDto:CanvasAddDto): Promise<CanvasDto|null> => {
     const resultCanvas = await prisma.canvas.create({
         data:{
-            table:{connect:{id:canvasAddDto.tableId}}
+            table:{connect:{id:Number(canvasAddDto.tableId)}}
         }
     })
     return resultCanvas ? resultCanvas as CanvasDto : null;

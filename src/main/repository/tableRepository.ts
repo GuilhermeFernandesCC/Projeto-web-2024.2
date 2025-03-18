@@ -17,7 +17,7 @@ export const tableAddRepository = async (tabelAddDto:TableAddDto): Promise<Table
 export const tableGetRepository = async(id:number): Promise<TableDto|null> => {
     const resultTable = await prisma.table.findUnique({
         where:{
-            id: id
+            id: Number(id)
         }
     })
     

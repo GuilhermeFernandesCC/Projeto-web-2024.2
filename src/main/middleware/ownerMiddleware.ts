@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { table } from 'console';
 import {Request, Response, NextFunction} from 'express';
 
 const prisma = new PrismaClient();
@@ -30,7 +31,13 @@ export const checkOwner = ():any => {
 
 export const checkTableOwner = ():any => {
     return async (req: AuthRequest, res: Response, next:NextFunction)=>{
-        const tableId = req.params.id
+        let tableId:number;
+        if (!req.params.id) {
+            tableId = req.body.tableId
+        }else{
+            tableId = Number(req.params.id)
+        }
+        
         const userId = req.user?.id;
         if (!userId){
             return res.status(401).json({message:"Usuário não autenticado"})
@@ -48,3 +55,32 @@ export const checkTableOwner = ():any => {
         next();
     }
 }
+export const checkCanvasOwner = ():any => {
+    return async (req: AuthRequest, res: Response, next:NextFunction)=>{
+        const canvasId = req.params.id
+        
+        const userId = req.user?.id;
+        if (!userId){
+            return res.status(401).json({message:"Usuário não autenticado"})
+        }
+
+        const canvas= await prisma['canvas'].findUnique({where: { id:Number(canvasId)}});
+        
+        if (!canvas) {
+            return res.status(404).json({message:`Canvas não encontrado.`})
+        }
+
+        const table= await prisma['table'].findUnique({where: { id:Number(canvas.tableId)}});
+        
+        if (!table) {
+            return res.status(404).json({message:`Table não encontrado.`})
+        }
+        
+        if (table.masterId !== userId){
+            return res.status(403).json({message:"Acesso negado: você não é o dono deste objeto"})
+        }
+        next();
+    }
+}
+
+
