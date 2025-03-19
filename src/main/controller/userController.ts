@@ -126,7 +126,7 @@ router.delete('/delete/:id',authenticate,checkOwner(),async (req:Request,res:Res
  *       500:
  *         description: Erro no servidor
  */
-router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.put('/update/:id',authenticate,checkOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const updateUserDto = req.body;
     const result = await userUpdateService(Number(req.params.id),updateUserDto);
     return res.status(200).json(result);
