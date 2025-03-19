@@ -39,7 +39,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev src/main/app.ts",
-    "test": "mocha --time-out 20000 --require tsx test/**/*.test.ts"
+    "test": "cross-env NODE_ENV=test mocha --time-out 20000 --require tsx test/**/*.test.ts"
   },
   "repository": {
     "type": "git",

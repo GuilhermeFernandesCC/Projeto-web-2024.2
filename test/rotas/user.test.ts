@@ -2,61 +2,67 @@
 import { execSync } from "child_process";
 import axios from 'axios'
 import { expect } from "chai";
-import { app, prisma } from "../../src/main/app";
-import { Server } from "http";
 import { it } from "mocha";
-
+import { app,prisma } from "../../src/main/appTeste";
+import teste from "teste-auth";
 var url_base = ''
-
-let server: Server;
+//teste()
 before(async function () {
-  this.timeout(20000);
-  //BD de Testes
-  process.env.PORT = '4001'
-  process.env.DATABASE_URL = "postgresql://postgres:ProjetoWeb777@db.bzbphfxgkdubddvmkgyu.supabase.co:5432/postgres"
-  //Inicia aplicação em teste
-  server = app.listen(process.env.PORT, () => {
-    console.log(`🚀 Aplicação de testes rodando na porta ${process.env.PORT}`);
-  });
-  //URL
-  url_base = 'http://localhost:'+process.env.PORT
-  console.log(url_base)
-  //console.log("⏳ Resetando o banco de testes...");
-  //execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
-  //console.log("✅ Banco de testes resetado!");
+    this.timeout(20000);
+    //BD de Testes
+    process.env.PORT = '4001';
+    process.env.DATABASE_URL = "postgresql://postgres:ProjetoWeb777@db.bzbphfxgkdubddvmkgyu.supabase.co:5432/postgres"
+    //URL
+    url_base = `http://localhost:${process.env.PORT }`
+    //execSync("npx prisma migrate dev init")
+    app.listen(process.env.PORT, () => {
+        console.log(`🚀 Servidor rodando em http://localhost:${process.env.PORT}`)
+        console.log(`Documentação Swagger em http://localhost:${process.env.PORT}/api-docs`)
+    })
 });
-async function resetbanco(){
-    before(async function () {
-        this.timeout(20000)
-        console.log("⏳ Resetando o banco de testes...");
-        execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
-        console.log("✅ Banco de testes resetado!");})
-    }
+
+before(async function () {
+    this.timeout(20000)
+    console.log("⏳ Resetando o banco de testes...");
+    execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
+    console.log("✅ Banco de testes resetado!");
+});
+
+after(async function ()  {
+    this.timeout(20000)
+    
+})
 
 async function createUserTeste() {
     console.log("🔹 Criando usuário de teste...");
-    await prisma.user.create({
-        data:{
-            "name":"test",
-            "senha":"teste123",
-            "email":"teste@email.com"
-        }
+    const response = await axios.post(url_base+'/user/add/',{
+        "name":"test",
+        "email":"teste@email.com",
+        "senha":"teste123"
+        
     })
+    console.log(response.data)
 }
 
-after(async function () {
-    this.timeout(20000)
-    await prisma.$disconnect();
-    if(server){
-        server.close()
-    }
-  });
-describe('Teste de API Rota User',function() {
+async function loginDeTeste() {
+    console.log("Realizando login...")
+    const response = await axios.post(url_base+'/auth/login',{
+        "email":"teste@email.com",
+        "password":"teste123"
+    })
+    return String(response.data.token);
+
+}
+describe("Teste de API User",function(){
     const model = '/user'
 
-    describe('Testes Add',function(){
-        resetbanco();
-
+    describe(`Testes ${model} Add`,function(){
+        before(function () {
+            this.timeout(20000)
+            console.log("⏳ Resetando o banco de testes...");
+            execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
+            console.log("✅ Banco de testes resetado!");
+        });
         it('Deve Retornar 201 para a rota Post e um usuário adicionado /user/add', async function() {
             this.timeout(10000)
             const response = await axios.post(url_base+model+'/add/',{
@@ -86,7 +92,12 @@ describe('Teste de API Rota User',function() {
     })
 
     describe('Testes Getall',function() {
-        resetbanco();
+        before(function () {
+            this.timeout(20000)
+            console.log("⏳ Resetando o banco de testes...");
+            execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
+            console.log("✅ Banco de testes resetado!");
+        });
         it('Deve Retornar 200 para a rota GET e uma lista vazia /user/getall', async function() {
             this.timeout(10000)
             const response = await axios.get(url_base+model+'/getall');
@@ -106,7 +117,12 @@ describe('Teste de API Rota User',function() {
     })
 
     describe('Testes Get',function() {
-        resetbanco();
+        before(function () {
+            this.timeout(20000)
+            console.log("⏳ Resetando o banco de testes...");
+            execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
+            console.log("✅ Banco de testes resetado!");
+        });
         it('Deve Retornar 200 para a rota GET /user/get/id', async function() {
             this.timeout(10000)
             await createUserTeste();
@@ -122,47 +138,91 @@ describe('Teste de API Rota User',function() {
         })
     })
 
-    describe('Testes Delete',function() {
-        resetbanco();
+    describe('Testes Delete', function() {
+        //token="teste2"
+        before(async function () {
+            this.timeout(20000)
+            console.log("⏳ Resetando o banco de testes...");
+            execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
+            console.log("✅ Banco de testes resetado!");
+            
+            //await createUserTeste();
+            //console.log("Usuario Criado")
+            //token = await loginDeTeste();
+            //console.log("Logado"+`${token}`)
+            //console.log(token)
+        });
+        
         it('Deve Retornar 200 para a rota DELETE /user/delete/id', async function() {
-            this.timeout(10000)
+            this.timeout(30000)
             await createUserTeste();
-            const response = await axios.delete(url_base+model+'/delete/1').catch(
+            let token = await loginDeTeste();
+            console.log("token criado : " + token)
+            const headers = { Authorization: `Bearer ${token}` }
+            const response = await axios.delete(url_base+model+'/delete/1',{
+                headers
+            }).catch(
                 (error) => error.response
             );
+            console.log(response.data)
             expect(response.status).to.equal(200); 
         })
         it('Deve Retornar 404 para a rota DELETE /user/delete/id', async function() {
-            this.timeout(10000)
-            const response = await axios.delete(url_base+model+'/delete/2').catch(
+            this.timeout(20000);
+            await createUserTeste();
+            let token = await loginDeTeste();
+            console.log(token)
+            const headers = { 'Authorization': `Bearer ${token}` }
+            const response = await axios.delete(url_base+model+'/delete/999',{
+                headers
+            }).catch(
                 (error) => error.response
-            ); 
+            );
+            console.log(response.data)
             expect(response.status).to.equal(404);
         })
     })
     describe('Testes Update',function() {
-        resetbanco();
+        before(async function () {
+            this.timeout(30000)
+            console.log("⏳ Resetando o banco de testes...");
+            execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
+            console.log("✅ Banco de testes resetado!");
+
+            
+            //console.log("Usuario Criado")
+            //const token = await loginDeTeste();
+            //console.log("Logado")
+        });
         it('Deve Retornar 200 para a rota PUT /user/update/id', async function() {
-            this.timeout(10000)
+            this.timeout(20000)
             await createUserTeste();
+            let token = await loginDeTeste();
+            const headers = { Authorization: `Bearer ${token}` }
             const response = await axios.put(url_base+model+'/update/1',{
                 "name":"testUpdated",
-                "senha":"teste123Updated",
                 "email":"testeUpdated@email.com"
+            },{
+                headers
             }).catch(
                 (error) => error.response
             );
             expect(response.status).to.equal(200); 
         })
         it('Deve Retornar 404 para a rota PUT /user/update/id', async function() {
-            this.timeout(10000)
-            const response = await axios.put(url_base+model+'/update/2',{
+            this.timeout(20000)
+            await createUserTeste();
+            let token = await loginDeTeste();
+            const headers = { Authorization: `Bearer ${token}` }
+            const response = await axios.put(url_base+model+'/update/99',{
                 "name":"testUpdated",
-                "senha":"teste123Updated",
                 "email":"testeUpdated@email.com"
+            },{
+                headers
             }).catch(
                 (error) => error.response
             ); 
+            console.log(response.data)
             expect(response.status).to.equal(404);
         })
     })

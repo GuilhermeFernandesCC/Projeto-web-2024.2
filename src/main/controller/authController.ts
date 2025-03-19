@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {comparePassword, generateToken} from '../utils/auth';
-import { userGetByEmailService } from '../service/userService';
+import {comparePassword, generateToken} from '@utils/auth';
+import { userGetByEmailService } from '@service/userService';
 
 const router = Router()
 /**
@@ -29,8 +29,6 @@ router.post('/login', async (req: Request, res:Response, next:NextFunction):Prom
     try {
         // Verifica se o usuário existe;
         const user = await userGetByEmailService(email);
-        console.log(user?.senha)
-        console.log(password)
         if (!user) {
             return res.status(400).json({message: 'Invalid email'});
         }
@@ -44,7 +42,7 @@ router.post('/login', async (req: Request, res:Response, next:NextFunction):Prom
 
         // Gera um token JWT
         const token = generateToken(user.id,user.email);
-        
+        console.log(token);
         res.status(200).json({message:'Login successful',token});
 
     } catch (err) {

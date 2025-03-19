@@ -1,8 +1,8 @@
 import {Router,Request,Response, NextFunction}from 'express';
-import { userAddService,userGetService,userDeleteService, userUpdateService, userGetAllService } from '../service/userService';
-import { UserAddDto } from '../Dto/userAddDto';
-import { authenticate } from '../middleware/authMiddleware'
-import { checkOwner } from '../middleware/ownerMiddleware';
+import { userAddService,userGetService,userDeleteService, userUpdateService, userGetAllService } from '@service/userService';
+import { UserAddDto } from "@Dto/userAddDto";
+import { authenticate } from '@middleware/authMiddleware'
+import { checkOwner } from '@middleware/ownerMiddleware';
 
 const router = Router();
 
