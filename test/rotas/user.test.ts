@@ -5,7 +5,10 @@ import { expect } from "chai";
 import { it } from "mocha";
 import { app,prisma } from "../../src/main/appTeste";
 import teste from "teste-auth";
+import { Server } from "http";
+
 var url_base = ''
+let server:Server
 //teste()
 before(async function () {
     this.timeout(20000);
@@ -15,7 +18,7 @@ before(async function () {
     //URL
     url_base = `http://localhost:${process.env.PORT }`
     //execSync("npx prisma migrate dev init")
-    app.listen(process.env.PORT, () => {
+    server =  app.listen(process.env.PORT, () => {
         console.log(`🚀 Servidor rodando em http://localhost:${process.env.PORT}`)
         console.log(`Documentação Swagger em http://localhost:${process.env.PORT}/api-docs`)
     })
@@ -30,7 +33,7 @@ before(async function () {
 
 after(async function ()  {
     this.timeout(20000)
-    
+    server.close()
 })
 
 async function createUserTeste() {
