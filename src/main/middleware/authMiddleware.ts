@@ -12,13 +12,9 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
     }
     
     token = token.split(" ")[1]
-    console.log("Token em middleware"+token)
-    
 
     try {
-        console.log("#T#R#Y#"+token)
         const decoded = verifyToken(token);
-        console.log("decoded: "+decoded);
         req.user = decoded; //Adiciona o usuário decodificado ao objeto 'req'
         next();
     }catch (err){

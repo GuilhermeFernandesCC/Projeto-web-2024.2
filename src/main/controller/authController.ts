@@ -42,7 +42,6 @@ router.post('/login', async (req: Request, res:Response, next:NextFunction):Prom
 
         // Gera um token JWT
         const token = generateToken(user.id,user.email);
-        console.log(token);
         res.status(200).json({message:'Login successful',token});
 
     } catch (err) {
