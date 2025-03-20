@@ -4,7 +4,6 @@ import axios from 'axios'
 import { expect } from "chai";
 import { it } from "mocha";
 import { app,prisma } from "../../src/main/appTeste";
-import teste from "teste-auth";
 import { Server } from "http";
 
 var url_base = ''
