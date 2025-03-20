@@ -61,7 +61,7 @@ async function loginDeTeste() {
 
 
 beforeEach(async function () {
-    this.timeout(20000)
+    this.timeout(30000)
     console.log("⏳ Resetando o banco de testes...");
     await execSync("npx prisma migrate reset --force --skip-seed", { stdio: "inherit" });
     console.log("🔄 Aguardando banco de dados reiniciar...");
