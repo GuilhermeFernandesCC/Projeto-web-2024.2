@@ -52,5 +52,5 @@ export const tokenGetAllRepository = async(): Promise<TokenDto[]|null> => {
 
 export const userWithTokenRepository = async(userid:number): Promise<number|null> => {
     const token = await prisma['token'].findUnique({where:{userId:userid}})
-    return token? token.userId:null;
+    return token? token.id:null;
 }   

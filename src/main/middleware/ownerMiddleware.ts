@@ -29,6 +29,22 @@ export const checkOwner = ():any => {
     }
 }
 
+export const checkTokenOwner = ():any => {
+    return async (req: AuthRequest, res:Response, next:NextFunction)=>{
+        let tokenId:number
+        const userId = Number(req.user?.id)
+        if (!userId){
+            return res.status(401).json({message:"Usuário não autenticado"})
+        }
+
+        const resource = await prisma['token'].findUnique({where: { userId:userId}});
+        if (!resource) {
+            return res.status(404).json({message:`Token não encontrado.`})
+        }
+        next();
+    }
+}
+
 export const checkTableOwner = ():any => {
     return async (req: AuthRequest, res: Response, next:NextFunction)=>{
         let tableId:number;

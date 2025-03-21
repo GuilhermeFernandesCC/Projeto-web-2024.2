@@ -3,7 +3,7 @@ import { TokenAddDto } from '../Dto/tokenAddDto';
 import { tokenAddService, tokenDeleteService, tokenGetAllService, tokenGetService, tokenUpdateService } from '../service/tokenService';
 import { authenticate } from '../middleware/authMiddleware';
 import { UserNotFound } from '../error/userNotFound';
-import { checkOwner } from '../middleware/ownerMiddleware';
+import { checkOwner, checkTokenOwner } from '../middleware/ownerMiddleware';
 
 interface AuthRequest extends Request {
     user?: {id:number,email:string};
@@ -110,10 +110,11 @@ router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise
  *       500:
  *         description: Erro no servidor
  */
-router.delete('/delete',authenticate,checkOwner(),async (req:AuthRequest,res:Response, next:NextFunction):Promise<any> => {
+router.delete('/delete',authenticate,checkTokenOwner(),async (req:AuthRequest,res:Response, next:NextFunction):Promise<any> => {
     if(!req.user?.id){
         throw UserNotFound();
     }
+    console.log(req.user.id)
     const result = await tokenDeleteService(Number(req.user.id));
     return res.status(200).json(result);
 })
