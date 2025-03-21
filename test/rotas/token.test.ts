@@ -22,6 +22,18 @@ before(async function () {
     })
 });
 
+async function createTokenTeste() {
+    console.log("🔹 Criando token de teste...")
+    const token = await loginDeTeste();
+    const headers = { 'Authorization': `Bearer ${token}` }
+    const response = await axios.post(url_base+'/token/add/',{},
+        {headers}).catch(function (error) {
+        if (error.response) {
+            console.log("Error token table: "+error.response.data)
+            return error.response
+        }})
+}
+
 async function createUserTeste() {
     console.log("🔹 Criando usuário de teste...");
     const response = await axios.post(url_base+'/user/add/',{
@@ -67,21 +79,16 @@ describe("Testes de API Token",function(){
         this.timeout(20000)
         const token = await loginDeTeste()
         const headers = { 'Authorization': `Bearer ${token}` }
-        const response = await axios.post(url_base+model+'/add/',{
-            "name":"testTable",
-        },{headers}).catch(function (error) {
+        const response = await axios.post(url_base+model+'/add/',{},{headers:headers}).catch(function (error) {
             if (error.response) {
                 return error.response
             }})
-        console.log(response.data)
         expect(response.status).to.equal(201);
     })
 
     it('Deve Retornar 401 para ao não receber um token válido, rota Post /token/add', async function() {
         this.timeout(20000)
-        const response = await axios.post(url_base+model+'/add/',{
-            "name":"testTable",
-        }).catch(function (error) {
+        const response = await axios.post(url_base+model+'/add/').catch(function (error) {
             if (error.response) {
                 return error.response
             }})
@@ -90,14 +97,75 @@ describe("Testes de API Token",function(){
 
     it('Deve Retornar 400 para ao receber um token inválido, rota Post /token/add', async function() {
         this.timeout(20000)
-        const response = await axios.post(url_base+model+'/add/',{
-            "name":"testTable",
-        }).catch(function (error) {
+        const token = 'tokenInvalido'
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.post(url_base+model+'/add/',{},{headers:headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(400);
+    })
+
+    it('Deve Retornar 200 ao receber um id de token existente, rota Get /token/get/1', async function() {
+        this.timeout(20000)
+        await createTokenTeste()
+        const response = await axios.get(url_base+model+'/get/1').catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(200);
+    })
+    it('Deve Retornar 404 ao receber um id de token inexistente, rota Get /token/get/999', async function() {
+        this.timeout(20000)
+        const response = await axios.get(url_base+model+'/get/999').catch(function (error) {
             if (error.response) {
                 return error.response
             }})
         expect(response.status).to.equal(404);
     })
 
+    it('Deve Retornar 200 ao deletar um token existente, rota Delete /token/delete', async function () {
+        this.timeout(20000)
+        await createTokenTeste()
+        const token = await loginDeTeste();
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.delete(url_base+model+'/delete',{headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(200);
+    })
+    it('Deve Retornar 404 quando não existe token a ser deletado, rota Delete /token/delete', async function () {
+        this.timeout(20000)
+        const token = await loginDeTeste();
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.delete(url_base+model+'/delete',{headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(404);
+    })
 
+    it('Deve Retornar 200 ao receber um id de token existente, rota Update /table/update/1', async function () {
+        this.timeout(20000)
+        await createTokenTeste();
+        const token = await loginDeTeste();
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.put(url_base+model+'/update/1',{},{headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(200);
+    })
+    it('Deve Retornar 404 ao receber um id de token inexistente, rota Update /tokwn/update/999', async function () {
+        this.timeout(20000)
+        await createTokenTeste();
+        const token = await loginDeTeste();
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.put(url_base+model+'/update/999',{},{headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(404);
+    })
 })
