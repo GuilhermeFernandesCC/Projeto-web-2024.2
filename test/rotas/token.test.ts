@@ -87,4 +87,17 @@ describe("Testes de API Token",function(){
             }})
         expect(response.status).to.equal(401);
     })
+
+    it('Deve Retornar 400 para ao receber um token inválido, rota Post /token/add', async function() {
+        this.timeout(20000)
+        const response = await axios.post(url_base+model+'/add/',{
+            "name":"testTable",
+        }).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(404);
+    })
+
+
 })
