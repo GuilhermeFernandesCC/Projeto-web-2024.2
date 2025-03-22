@@ -51,3 +51,13 @@ export const tableGetAllRepository = async(): Promise<TableDto[]|null> => {
     const resultTables = await prisma.table.findMany()
     return resultTables.map( table => table as TableDto)
 }
+
+export const tableGetByUserMasterRespository = async(userId:number) : Promise<TableDto[]> => {
+    const resultTables = await prisma.table.findMany(
+        {where:{
+            masterId:userId
+        }
+        }
+    )
+    return resultTables as TableDto[];
+}

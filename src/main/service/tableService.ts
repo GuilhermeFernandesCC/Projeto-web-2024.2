@@ -2,7 +2,7 @@ import { TableAddDto } from "../Dto/tableAddDto";
 import { TableUpdateDto } from "../Dto/tableUpdateDto";
 import { TableDto } from "../Dto/tableDto";
 import { TableNotFound } from "../error/tableNotFound";
-import { tableAddRepository, tableDeleteRepository, tableGetAllRepository, tableGetRepository, tableUpdateRepository } from "../repository/tableRepository";
+import { tableAddRepository, tableDeleteRepository, tableGetAllRepository, tableGetByUserMasterRespository, tableGetRepository, tableUpdateRepository } from "../repository/tableRepository";
 import { userGetService } from "./userService";
 
 export const tableAddService = async (tableDto:TableAddDto): Promise<TableDto|null> => {
@@ -35,3 +35,8 @@ export const tableGetAllService = async(): Promise<TableDto[]| null> => {
 
     return result ;
 };
+
+export const tableGetByUserMasterService = async(userId:number): Promise<TableDto[]> => {
+    const result = await tableGetByUserMasterRespository(userId)
+    return result;
+}

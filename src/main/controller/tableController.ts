@@ -1,7 +1,7 @@
 
 import {Router,Request,Response, NextFunction}from 'express';
 import { TableAddDto } from '../Dto/tableAddDto';
-import { tableAddService, tableDeleteService, tableGetAllService, tableGetService, tableUpdateService } from '../service/tableService';
+import { tableAddService, tableDeleteService, tableGetAllService, tableGetByUserMasterService, tableGetService, tableUpdateService } from '../service/tableService';
 import { authenticate } from '../middleware/authMiddleware';
 import { checkTableOwner } from '../middleware/ownerMiddleware';
 import { TableUpdateDto } from '../Dto/tableUpdateDto';
@@ -143,6 +143,35 @@ router.put('/update/:id',authenticate,checkTableOwner(),async (req:Request,res:R
     const updateTableDto = req.body;
     const result = await tableUpdateService(Number(req.params.id),updateTableDto);
     return res.status(200).json(result);
+})
+
+/**
+ * @swagger
+ * /table/whereMaster:
+ *   get:
+ *     summary: Retorna todas as mesas que o usuário é mestre
+ *     description: Esta rota retorna todas as mesa que o usuário logado é mestre do banco de dados.
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/getWhereMaster',authenticate,async ( req:AuthRequest,res: Response , next:NextFunction):Promise<any> =>{
+    if(!req.user?.id){
+        throw UserNotFound();
+    }
+    const masterId = req.user.id;
+    const result = await tableGetByUserMasterService(Number(masterId));
+    
+    return res.status(200).json(result);
+
 })
 
 export default router;
