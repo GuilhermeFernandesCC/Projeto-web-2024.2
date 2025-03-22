@@ -181,4 +181,40 @@ describe("Testes de API Table",function(){
         expect(response.status).to.equal(404);
         expect(response.data.message).to.equal('Table não encontrado.');
     })
+
+    it('Deve Retornar 200 e uma lista de table quais o usuário é mestre, rota Get /table/getWhereMaster', async function() {
+        this.timeout(20000)
+        await createTableTeste()
+        const token = await loginDeTeste();
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.get(url_base+model+'/getWhereMaster',{headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(200);
+        expect(response.data).length(1)
+    })
+
+    it('Deve Retornar 200 e uma lista vazia, quando o usuário não tem mesas, rota Get /table/getWhereMaster', async function() {
+        this.timeout(20000)
+        const token = await loginDeTeste();
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.get(url_base+model+'/getWhereMaster',{headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(200);
+        expect(response.data).length(0)
+    })
+
+    it('Deve Retornar 400 e ao receber um token inválido, rota Get /table/getWhereMaster', async function() {
+        this.timeout(20000)
+        const token = "Token Invalido"
+        const headers = { 'Authorization': `Bearer ${token}` }
+        const response = await axios.get(url_base+model+'/getWhereMaster',{headers}).catch(function (error) {
+            if (error.response) {
+                return error.response
+            }})
+        expect(response.status).to.equal(400);
+    })
 })
