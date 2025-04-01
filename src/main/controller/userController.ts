@@ -5,7 +5,9 @@ import { authenticate } from '@middleware/authMiddleware'
 import { checkOwner } from '@middleware/ownerMiddleware';
 
 const router = Router();
-
+interface AuthRequest extends Request {
+    user?: {id:number,email:string};
+}
 
 /**
  * @swagger
@@ -59,6 +61,32 @@ router.get('/get/:id',async ( req:Request,res: Response , next:NextFunction):Pro
     const result = await userGetService(Number(req.params.id));
     return res.status(200).json(result);
 })
+
+/**
+ * @swagger
+ * /user/getPerfil
+ *   get:
+ *     summary: Retorna perfil do usuário logado
+ *     description: Esta rota retorna um  usuário ao banco de dados.
+ *     tags:
+ *       - Usuários
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/getPerfil',authenticate,async ( req:AuthRequest,res: Response , next:NextFunction):Promise<any> =>{
+    const result = await userGetService(Number(req.user?.id));
+    return res.status(200).json(result);
+})
+
 /**
  * @swagger
  * /user/getall:
