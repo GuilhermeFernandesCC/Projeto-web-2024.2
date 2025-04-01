@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import express from "express"
+const cors = require("cors")
 import "express-async-errors"
 
 import { swaggerUi, swaggerSpec } from './config/swagger';
@@ -11,9 +12,15 @@ import tokenController from "./controller/tokenController"
 import authController from './controller/authController'
 import { PrismaClient } from '@prisma/client';
 
+
 dotenv.config();
 const prisma = new PrismaClient()
 const app = express();
+app.use(cors({
+    origin: "http://localhost:5173", // Permite requisições do frontend
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true, // Permite envio de cookies e autenticação
+  }));
 app.use(express.json());
 //config swagger
 app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpec))
