@@ -2,8 +2,8 @@ import { TableAddDto } from "../Dto/tableAddDto";
 import { TableUpdateDto } from "../Dto/tableUpdateDto";
 import { TableDto } from "../Dto/tableDto";
 import { TableNotFound } from "../error/tableNotFound";
-import { tableAddRepository, tableDeleteRepository, tableGetAllRepository, tableGetByUserMasterRespository, tableGetRepository, tableUpdateRepository } from "../repository/tableRepository";
-import { userGetService } from "./userService";
+import { tableAddRepository, tableDeleteRepository, tableGetAllRepository, tableGetByUserMasterRespository, tableGetRepository, tableUpdateRepository, addPlayerToTable, removePlayerFromTable} from "../repository/tableRepository";
+import { userGetService,userGetByEmailService } from "./userService";
 
 export const tableAddService = async (tableDto:TableAddDto): Promise<TableDto|null> => {
     
@@ -36,7 +36,21 @@ export const tableGetAllService = async(): Promise<TableDto[]| null> => {
     return result ;
 };
 
-export const tableGetByUserMasterService = async(userId:number): Promise<TableDto[]> => {
-    const result = await tableGetByUserMasterRespository(userId)
-    return result;
+export const addPlayerTableService = async(userEmail:string,tableId:number) => {
+    const userDto = await userGetByEmailService(userEmail)
+    if(userDto?.id){
+        await addPlayerToTable(userDto.id,tableId)
+    }
+    
+}
+
+export const removePlayerTableService = async(userEmail:string,tableId:number) => {
+    const userDto = await userGetByEmailService(userEmail)
+    if(userDto?.id){
+        await removePlayerFromTable(userDto.id,tableId)
+    }
+}
+
+export const tableGetPlayersServices = async(tableId:number) => {
+    
 }

@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { TableAddDto } from "../Dto/tableAddDto";
 import { TableDto } from "../Dto/tableDto";
 import { TableUpdateDto } from "../Dto/tableUpdateDto";
+import { UserDto } from "@Dto/userDto";
 
 const prisma = new PrismaClient();
 
@@ -56,8 +57,41 @@ export const tableGetByUserMasterRespository = async(userId:number) : Promise<Ta
     const resultTables = await prisma.table.findMany(
         {where:{
             masterId:userId
-        }
-        }
-    )
+        }})
     return resultTables as TableDto[];
+}
+
+export const addPlayerToTable = async (userId: number, tableId: number) => {
+    const newPlayer = await prisma.userOnTables.create({
+    data: {
+        userId: userId,
+        tableId: tableId,
+    },
+    });
+    return newPlayer;
+};
+
+export const removePlayerFromTable = async (userId: number, tableId: number) => {
+    await prisma.userOnTables.delete({
+        where: {
+          userId_tableId: {
+            userId: userId,
+            tableId: tableId,
+          },
+        },
+      });
+      return { message: "Jogador removido com sucesso" };
+};
+
+export const tableGetPlayersRepository = async(tableId:number) =>{
+    const userTables = await prisma.userOnTables.findMany({
+        where:{
+            tableId:tableId
+        },
+        include:{
+            table:true
+        }
+    });
+
+    return userTables.map((entry) => entry.table as TableDto);
 }

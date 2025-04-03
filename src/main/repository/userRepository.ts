@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { UserAddDto } from '../Dto/userAddDto';
 import { UserDto } from '../Dto/userDto';
 import { UserGetDto } from '../Dto/userGetDto'
+import { TableDto } from '@Dto/tableDto';
 
 const prisma = new PrismaClient();
 
@@ -68,3 +69,25 @@ export const userGetByEmailRepository = async(email:string):Promise<UserDto|null
 	return resultUser ? resultUser as UserDto : null;
 
 }
+
+export const tablesAsMaster = async(userId:number):Promise<TableDto[]> =>{
+	const resutlTables = await prisma.table.findMany({
+		where: {
+			masterId:userId
+		}
+	})
+	return resutlTables as TableDto[];
+}
+
+export const tablesAsPlayer = async (userId: number):Promise<TableDto[]> => {
+	const userTables = await prisma.userOnTables.findMany({
+	  where: {
+		userId: userId, // Filtra pelo ID do usuário
+	  },
+	  include: {
+		table: true, // Inclui os dados da tabela associada
+	  },
+	});
+  
+	return userTables.map((entry) => entry.table as TableDto); // Retorna apenas as mesas
+  };

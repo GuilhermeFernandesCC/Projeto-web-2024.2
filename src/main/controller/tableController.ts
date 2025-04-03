@@ -1,7 +1,7 @@
 
 import {Router,Request,Response, NextFunction}from 'express';
 import { TableAddDto } from '../Dto/tableAddDto';
-import { tableAddService, tableDeleteService, tableGetAllService, tableGetByUserMasterService, tableGetService, tableUpdateService } from '../service/tableService';
+import { addPlayerTableService, removePlayerTableService, tableAddService, tableDeleteService, tableGetAllService, tableGetService, tableUpdateService } from '../service/tableService';
 import { authenticate } from '../middleware/authMiddleware';
 import { checkTableOwner } from '../middleware/ownerMiddleware';
 import { TableUpdateDto } from '../Dto/tableUpdateDto';
@@ -147,31 +147,54 @@ router.put('/update/:id',authenticate,checkTableOwner(),async (req:Request,res:R
 
 /**
  * @swagger
- * /table/whereMaster:
- *   get:
- *     summary: Retorna todas as mesas que o usuário é mestre
- *     description: Esta rota retorna todas as mesa que o usuário logado é mestre do banco de dados.
+ * /table/addPlayer/:id:
+ *   post:
+ *     summary: Adiciona um player em uma mesa
+ *     description: Adiciona um player em uma mesa, pelo id da mesa e email do usuário
  *     tags:
  *       - Mesas
  *     requestBody:
- *       required: false
+ *       required: true
  *       content:
  *         application/json:
  *     responses:
  *       200:
  *         description: Sucesso
+ *       404:
+ *         description: Mesa não encontrado
  *       500:
  *         description: Erro no servidor
  */
-router.get('/getWhereMaster',authenticate,async ( req:AuthRequest,res: Response , next:NextFunction):Promise<any> =>{
-    if(!req.user?.id){
-        throw UserNotFound();
-    }
-    const masterId = req.user.id;
-    const result = await tableGetByUserMasterService(Number(masterId));
-    
+router.post('/addPlayer/:id',authenticate,checkTableOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const emailUser = String(req.body.email)
+    const result = await addPlayerTableService(emailUser,Number(req.params.id));
     return res.status(200).json(result);
+})
 
+/**
+ * @swagger
+ * /table/removePlayer/:id:
+ *   delete:
+ *     summary: Remove um player em uma mesa
+ *     description: Remove um player em uma mesa, pelo id da mesa e email do usuário
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       404:
+ *         description: Mesa não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.delete('/removePlayer/:id',authenticate,checkTableOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const emailUser = String(req.body.email)
+    const result = await removePlayerTableService(emailUser,Number(req.params.id));
+    return res.status(200).json(result);
 })
 
 export default router;

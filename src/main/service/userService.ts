@@ -1,3 +1,4 @@
+import { TableDto } from "@Dto/tableDto";
 import { UserAddDto } from "@Dto/userAddDto";
 import { UserDto } from "@Dto/userDto";
 import { UserGetDto } from "@Dto/userGetDto";
@@ -5,7 +6,7 @@ import { emailAlreadyUsed } from "@error/emailAlreadyUsed";
 import { InvalidInput } from "@error/invalidInput";
 import { InvalidInputFill } from "@error/invalidInputFill";
 import { UserNotFound } from "@error/userNotFound";
-import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository, userEmailinUseRepository, userGetByEmailRepository} from "@repository/userRepository";
+import { userAddRepository,userGetRepository,userDeleteRepository,userUpdateRepository, userGetAllRepository, userEmailinUseRepository, userGetByEmailRepository, tablesAsMaster, tablesAsPlayer} from "@repository/userRepository";
 import { hashPassword } from "@utils/auth";
 
 const emailinUse = async (email:string): Promise<any> => {
@@ -78,5 +79,22 @@ export const userGetAllService = async(): Promise<UserGetDto[]| null> => {
 
 export const userGetByEmailService = async(email:string): Promise<UserDto| null> => {
 	const result = await userGetByEmailRepository(email);
+	if (result == null){
+		throw UserNotFound()
+	}
 	return result;
+}
+
+export const tablesAsMasterService = async(userId:number): Promise<TableDto[]> =>{
+	await userGetService(userId) //Verificar existencia
+	const result = await tablesAsMaster(userId);
+	
+	return result
+}
+
+export const tablesAsPlayerService = async(userId:number): Promise<TableDto[]> =>{
+	await userGetService(userId) //Verificar existencia
+	const result = await tablesAsPlayer(userId);
+	
+	return result
 }
