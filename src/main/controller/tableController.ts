@@ -1,7 +1,7 @@
 
 import {Router,Request,Response, NextFunction}from 'express';
 import { TableAddDto } from '../Dto/tableAddDto';
-import { addPlayerTableService, removePlayerTableService, tableAddService, tableDeleteService, tableGetAllService, tableGetService, tableUpdateService } from '../service/tableService';
+import { addPlayerTableService, removePlayerTableService, tableAddService, tableDeleteService, tableGetAllService, tableGetPlayersServices, tableGetService, tableUpdateService } from '../service/tableService';
 import { authenticate } from '../middleware/authMiddleware';
 import { checkTableOwner } from '../middleware/ownerMiddleware';
 import { TableUpdateDto } from '../Dto/tableUpdateDto';
@@ -194,6 +194,31 @@ router.post('/addPlayer/:id',authenticate,checkTableOwner(),async (req:Request,r
 router.delete('/removePlayer/:id',authenticate,checkTableOwner(),async (req:Request,res:Response, next:NextFunction):Promise<any> => {
     const emailUser = String(req.body.email)
     const result = await removePlayerTableService(emailUser,Number(req.params.id));
+    return res.status(200).json(result);
+})
+
+/**
+ * @swagger
+ * /table/getPlayers/:id:
+ *   delete:
+ *     summary: Retorna players de uma mesa
+ *     description: Retorna players de uma mesa
+ *     tags:
+ *       - Mesas
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *     responses:
+ *       200:
+ *         description: Sucesso
+ *       404:
+ *         description: Mesa não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/getPlayers/:id',authenticate,async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+    const result = await tableGetPlayersServices(Number(req.params.id));
     return res.status(200).json(result);
 })
 

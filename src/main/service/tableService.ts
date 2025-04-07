@@ -2,7 +2,7 @@ import { TableAddDto } from "../Dto/tableAddDto";
 import { TableUpdateDto } from "../Dto/tableUpdateDto";
 import { TableDto } from "../Dto/tableDto";
 import { TableNotFound } from "../error/tableNotFound";
-import { tableAddRepository, tableDeleteRepository, tableGetAllRepository, tableGetByUserMasterRespository, tableGetRepository, tableUpdateRepository, addPlayerToTable, removePlayerFromTable} from "../repository/tableRepository";
+import { tableAddRepository, tableDeleteRepository, tableGetAllRepository, tableGetByUserMasterRespository, tableGetRepository, tableUpdateRepository, addPlayerToTable, removePlayerFromTable, tableGetPlayersRepository} from "../repository/tableRepository";
 import { userGetService,userGetByEmailService } from "./userService";
 
 export const tableAddService = async (tableDto:TableAddDto): Promise<TableDto|null> => {
@@ -41,7 +41,7 @@ export const addPlayerTableService = async(userEmail:string,tableId:number) => {
     if(userDto?.id){
         await addPlayerToTable(userDto.id,tableId)
     }
-    
+    return userDto;
 }
 
 export const removePlayerTableService = async(userEmail:string,tableId:number) => {
@@ -49,8 +49,11 @@ export const removePlayerTableService = async(userEmail:string,tableId:number) =
     if(userDto?.id){
         await removePlayerFromTable(userDto.id,tableId)
     }
+    return userDto
 }
 
 export const tableGetPlayersServices = async(tableId:number) => {
-    
+    await tableGetService(tableId)
+    const userDto = await tableGetPlayersRepository(tableId)
+    return userDto
 }

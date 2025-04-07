@@ -3,6 +3,7 @@ import { TableAddDto } from "../Dto/tableAddDto";
 import { TableDto } from "../Dto/tableDto";
 import { TableUpdateDto } from "../Dto/tableUpdateDto";
 import { UserDto } from "@Dto/userDto";
+import { UserGetDto } from "@Dto/userGetDto";
 
 const prisma = new PrismaClient();
 
@@ -89,9 +90,9 @@ export const tableGetPlayersRepository = async(tableId:number) =>{
             tableId:tableId
         },
         include:{
-            table:true
+            user:true
         }
     });
 
-    return userTables.map((entry) => entry.table as TableDto);
+    return userTables.map((entry) => entry.user as UserGetDto);
 }
