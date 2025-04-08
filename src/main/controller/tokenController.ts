@@ -1,7 +1,13 @@
 import {Router,Request,Response, NextFunction}from 'express';
 import { TokenAddDto } from '../Dto/tokenAddDto';
-import { tokenAddService, tokenGetAllService, tokenGetService, tokenUpdateService } from '../service/tokenService';
-import { canvasDeleteService } from '../service/canvasService';
+import { tokenAddService, tokenDeleteService, tokenGetAllService, tokenGetService, tokenUpdateService } from '../service/tokenService';
+import { authenticate } from '../middleware/authMiddleware';
+import { UserNotFound } from '../error/userNotFound';
+import { checkOwner, checkTokenOwner } from '../middleware/ownerMiddleware';
+
+interface AuthRequest extends Request {
+    user?: {id:number,email:string};
+}
 
 const router = Router();
 
@@ -14,7 +20,7 @@ const router = Router();
  *     tags:
  *       - Tokens
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *     responses:
@@ -25,11 +31,13 @@ const router = Router();
  *       500:
  *         description: Erro no servidor
  */
-router.post('/add', async (req: Request, res: Response , next:NextFunction):Promise<any> => {
-    const tokenDto:TokenAddDto = req.body;
-
+router.post('/add',authenticate, async (req: AuthRequest, res: Response , next:NextFunction):Promise<any> => {
+    
+    if(!req.user?.id){
+        throw UserNotFound();
+    }
+    const tokenDto:TokenAddDto = {userId:req.user?.id}
     const result = await tokenAddService(tokenDto);
-
     return res.status(201).json(result);
 
 });
@@ -84,9 +92,9 @@ router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise
 })
 /**
  * @swagger
- * /token/delete/id:
+ * /token/delete:
  *   delete:
- *     summary: Deleta um Token
+ *     summary: Deleta o Token do usuário logado
  *     description: Esta rota deleta um Tokens do banco de dados.
  *     tags:
  *       - Tokens
@@ -102,15 +110,19 @@ router.get('/getall',async (req:Request,res:Response, next:NextFunction):Promise
  *       500:
  *         description: Erro no servidor
  */
-router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
-    const result = await canvasDeleteService(Number(req.params.id));
+router.delete('/delete',authenticate,checkTokenOwner(),async (req:AuthRequest,res:Response, next:NextFunction):Promise<any> => {
+    if(!req.user?.id){
+        throw UserNotFound();
+    }
+    console.log(req.user.id)
+    const result = await tokenDeleteService(Number(req.user.id));
     return res.status(200).json(result);
 })
 /**
  * @swagger
- * /token/update/id:
+ * /token/update:
  *   put:
- *     summary: Atualizar um Token
+ *     summary: Atualizar o token do usuário logado
  *     description: Esta rota atualizar um Token do banco de dados.
  *     tags:
  *       - Tokens
@@ -122,11 +134,14 @@ router.delete('/delete/:id',async (req:Request,res:Response, next:NextFunction):
  *       200:
  *         description: Token atualizado com sucesso
  *       404:
- *         description: Token não encontrado
+ *         description: Token não encontrado ou Usuário não encontrado
  *       500:
  *         description: Erro no servidor
  */
-router.put('/update/:id',async (req:Request,res:Response, next:NextFunction):Promise<any> => {
+router.put('/update/:id',authenticate,async (req:AuthRequest,res:Response, next:NextFunction):Promise<any> => {
+    if(!req.user?.id){
+        throw UserNotFound();
+    }
     const tokenUserDto = req.body;
     const result = await tokenUpdateService(Number(req.params.id),tokenUserDto);
     return res.status(200).json(result);

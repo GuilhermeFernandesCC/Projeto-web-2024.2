@@ -14,6 +14,9 @@ npx prisma migrate dev  init OBS: Supabase meio instável no plano básico talve
 ### Run
 npm run dev
 
+### Run Testes
+npm run test
+
 # Objetos 
 
 ## Usuários
@@ -43,6 +46,7 @@ Se imagem já tiver grid, essa ferramenta permite alinhas os grid para melhor us
 ## Front: Angular
 ## Banco de Dados: PostGreSQL (Supabase)
 ## Conexão com Banco: Prisma
+## Testes: Mocha e Chai
 
 # Requisitos 
 ### Login com conta google

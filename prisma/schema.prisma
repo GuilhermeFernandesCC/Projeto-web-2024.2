@@ -15,6 +15,7 @@ model User {
   id Int @id @default(autoincrement())
   email String @unique
   name String
+  senha String
   createdAt DateTime @default(now())
   tablesMaster Table[] // Tables as Master
   tablesPlayer UserOnTables[] // Tables as Player
@@ -40,9 +41,9 @@ model Table {
 }
 
 model UserOnTables{ // user on table as players
-  user User @relation(fields: [userId],references: [id])
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
   userId Int 
-  table Table @relation(fields: [tableId],references: [id])
+  table Table @relation(fields: [tableId],references: [id],onDelete: Cascade)
   tableId Int
   @@id([userId,tableId])
 }
